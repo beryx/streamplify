@@ -1,3 +1,3 @@
 ## Streamplify ##
 
-Welcome to *Streamplify*!
+Combinations, permutations and cartesian products as Java streams.
