@@ -12,13 +12,7 @@ plugins {
     id 'org.ajoberstar.github-pages' version '1.5.1'
     id "com.github.hierynomus.license" version "0.12.1"
     id "net.saliman.properties" version "1.4.4"
-    id 'com.gradle.build-receipt' version '1.0'
     id 'com.github.jk1.dependency-license-report' version '0.3.4'
-}
-
-buildReceiptLicense {
-    agreementUrl = 'https://gradle.com/terms-of-service'
-    agree = 'yes'
 }
 
 project.version.with {
