@@ -1,0 +1,5 @@
+String[] modules = [
+    'streamplify',
+]
+
+include modules

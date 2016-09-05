@@ -1,0 +1,20 @@
+[[getting_started]]
+= Getting Started
+
+CAUTION: You need Java 8 or newer in order to use {project-name}.
+
+{project-name} is available in Maven Central and JCenter.
+
+[subs="attributes",options="nowrap",title="Maven"]
+----
+&lt;dependency&gt;
+    &lt;groupId&gt;{project-group}&lt;/groupId&gt;
+    &lt;artifactId&gt;{project-name}&lt;/artifactId&gt;
+    &lt;version&gt;{project-version}&lt;/version&gt;
+&lt;/dependency&gt;
+----
+
+[subs="attributes",options="nowrap",title="Gradle"]
+----
+compile '{project-group}:{project-name}:{project-version}'
+----

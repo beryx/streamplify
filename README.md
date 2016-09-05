@@ -1,0 +1,3 @@
+## Streamplify ##
+
+Welcome to *Streamplify*!
