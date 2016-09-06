@@ -2,3 +2,5 @@
 = Introduction
 
 The {project-name} library offers streams for permutations, combinations and cartesian products.
+
+NOTE: The source code is available on https://github.com/beryx/streamplify[GitHub].
