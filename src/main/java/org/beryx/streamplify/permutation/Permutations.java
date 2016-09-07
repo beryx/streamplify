@@ -16,11 +16,11 @@
 package org.beryx.streamplify.permutation;
 
 import org.beryx.streamplify.Streamable;
+import org.beryx.streamplify.StreamableProxy;
 
 import java.math.BigInteger;
-import java.util.stream.Stream;
 
-public class Permutations implements Streamable<int[], Permutations> {
+public class Permutations extends StreamableProxy<int[], Permutations> {
     public static final int MAX_LENGTH = 20_000;
 
     private final Streamable<int[], ?> delegate;
@@ -34,18 +34,8 @@ public class Permutations implements Streamable<int[], Permutations> {
         }
     }
 
-    public Permutations withAdditionalCharacteristics(int additionalCharacteristics) {
-        delegate.withAdditionalCharacteristics(additionalCharacteristics);
-        return this;
-    }
-    
     @Override
-    public Stream<int[]> stream() {
-        return delegate.stream();
-    }
-
-    @Override
-    public Stream<int[]> parallelStream() {
-        return delegate.parallelStream();
+    public Streamable<int[], ?> getDelegate() {
+        return delegate;
     }
 }

@@ -35,6 +35,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
 
     protected BigIntegerIndexedSpliterator(BigInteger origin, BigInteger fence) {
         logger.trace("BigIntegerIndexedSpliterator({}, {})", origin, fence);
+        if(origin.compareTo(BigInteger.ZERO) < 0 || fence.compareTo(origin) < 0) throw new IllegalArgumentException("origin: " + origin + ", fence: " + fence);
         this.index = origin;
         this.fence = fence;
     }
@@ -58,12 +59,36 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     }
 
     @Override
-    public long estimateSize() {
-        BigInteger size = fence.subtract(index);
-        if(size.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
+    public long count() {
+        BigInteger size = bigCount();
+        if(size.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) <= 0) {
             return size.longValueExact();
         }
-        return Long.MAX_VALUE;
+        return -1;
+    }
+
+    @Override
+    public BigInteger bigCount() {
+        return fence.subtract(index);
+    }
+
+    @Override
+    public S skip(long n) {
+        return skip(BigInteger.valueOf(n));
+    }
+
+    @Override
+    public S skip(BigInteger n) {
+        if(n.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("skip(" + n + ")");
+        BigInteger targetIndex = index.add(n);
+        index = (targetIndex.compareTo(fence) >= 0) ? fence : targetIndex;
+        return (S)this;
+    }
+
+    @Override
+    public long estimateSize() {
+        long size = count();
+        return size < 0 ? Long.MAX_VALUE : size;
     }
 
     @Override

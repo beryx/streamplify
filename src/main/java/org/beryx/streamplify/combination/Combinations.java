@@ -16,11 +16,11 @@
 package org.beryx.streamplify.combination;
 
 import org.beryx.streamplify.Streamable;
+import org.beryx.streamplify.StreamableProxy;
 
 import java.math.BigInteger;
-import java.util.stream.Stream;
 
-public class Combinations implements Streamable<int[], Combinations> {
+public class Combinations extends StreamableProxy<int[], Combinations> {
     public static final int MAX_N = 50_000;
 
     private final Streamable<int[], ?> delegate;
@@ -35,22 +35,8 @@ public class Combinations implements Streamable<int[], Combinations> {
         }
     }
 
-    public Combinations withAdditionalCharacteristics(int additionalCharacteristics) {
-        delegate.withAdditionalCharacteristics(additionalCharacteristics);
-        return this;
-    }
-
+    @Override
     protected Streamable<int[], ?> getDelegate() {
         return delegate;
-    }
-
-    @Override
-    public Stream<int[]> stream() {
-        return delegate.stream();
-    }
-
-    @Override
-    public Stream<int[]> parallelStream() {
-        return delegate.parallelStream();
     }
 }

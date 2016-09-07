@@ -16,11 +16,11 @@
 package org.beryx.streamplify.product;
 
 import org.beryx.streamplify.Streamable;
+import org.beryx.streamplify.StreamableProxy;
 
 import java.math.BigInteger;
-import java.util.stream.Stream;
 
-public class CartesianProduct implements Streamable<int[], CartesianProduct> {
+public class CartesianProduct extends StreamableProxy<int[], CartesianProduct> {
     private final Streamable<int[], ?> delegate;
 
     public CartesianProduct(int... dimensions) {
@@ -32,22 +32,8 @@ public class CartesianProduct implements Streamable<int[], CartesianProduct> {
         }
     }
 
-    public CartesianProduct withAdditionalCharacteristics(int additionalCharacteristics) {
-    	delegate.withAdditionalCharacteristics(additionalCharacteristics);
-    	return this;
-    }
-
+    @Override
     protected Streamable<int[], ?> getDelegate() {
         return delegate;
-    }
-
-    @Override
-    public Stream<int[]> stream() {
-        return delegate.stream();
-    }
-
-    @Override
-    public Stream<int[]> parallelStream() {
-        return delegate.parallelStream();
     }
 }

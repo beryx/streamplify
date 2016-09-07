@@ -15,6 +15,7 @@
  */
 package org.beryx.streamplify;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -34,6 +35,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
 
     protected LongIndexedSpliterator(long origin, long fence) {
     	logger.trace("LongIndexedSpliterator({}, {})", origin, fence);
+        if(origin < 0 || fence < origin) throw new IllegalArgumentException("origin: " + origin + ", fence: " + fence);
         this.index = origin;
         this.fence = fence;
     }
@@ -55,7 +57,36 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     protected final long getFence() {
         return fence;
     }
-    
+
+    @Override
+    public long count() {
+        return fence - index;
+    }
+
+    @Override
+    public BigInteger bigCount() {
+        return BigInteger.valueOf(count());
+    }
+
+    @Override
+    public S skip(long n) {
+        if(n < 0) throw new IllegalArgumentException("skip(" + n + ")");
+        index = (fence - index <= n) ? fence : (index + n);
+        return (S)this;
+    }
+
+    @Override
+    public S skip(BigInteger bigN) {
+        if(bigN.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("skip(" + bigN + ")");
+        if(bigN.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+            index = fence;
+        } else {
+            long n = bigN.longValueExact();
+            index = (fence - index <= n) ? fence : (index + n);
+        }
+        return (S)this;
+    }
+
     @Override
     public long estimateSize() {
         return fence - index;
