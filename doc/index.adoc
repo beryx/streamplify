@@ -1,4 +1,4 @@
-= {project-name}
+= Streamplify
 :author: Serban Iordache
 :revnumber: {project-version}
 :toc: left
@@ -6,6 +6,7 @@
 :data-uri:
 :caption:
 :last-update-label!:
+:docinfo1:
 
 :leveloffset: +1
 
