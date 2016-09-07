@@ -19,25 +19,15 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 public class BigIntegerCartesianProduct extends BigIntegerIndexedSpliterator<int[], BigIntegerCartesianProduct> {
-    private final int[] dimensions;
-
     public BigIntegerCartesianProduct(int... dimensions) {
-        super(BigInteger.ZERO, count(dimensions));
-        if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
-        this.dimensions = dimensions;
-        setValueSupplier(this::getAt);
-        this.withAdditionalCharacteristics(DISTINCT);
+        this(count(dimensions), dimensions);
     }
 
-    private int[] getAt(BigInteger index) {
-        int[] val = new int[dimensions.length];
-        BigInteger dividend = index;
-        for(int k = dimensions.length - 1; k >= 0; k--) {
-            BigInteger[] quotientAndRemainder = dividend.divideAndRemainder(BigInteger.valueOf(dimensions[k]));
-            val[k] = quotientAndRemainder[1].intValueExact();
-            dividend = quotientAndRemainder[0];
-        }
-        return val;
+    BigIntegerCartesianProduct(BigInteger count, int... dimensions) {
+        super(BigInteger.ZERO, count);
+        if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
+        setValueSupplier(new CartesianProductSupplier.BigInt(dimensions, count));
+        this.withAdditionalCharacteristics(DISTINCT);
     }
 
     protected static BigInteger count(int[] dimensions) {

@@ -19,24 +19,15 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 public class LongCartesianProduct extends LongIndexedSpliterator<int[], LongCartesianProduct> {
-    private final int[] dimensions;
-
     public LongCartesianProduct(int... dimensions) {
-        super(0, count(dimensions));
-        if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
-        this.dimensions = dimensions;
-        setValueSupplier(this::getAt);
-        this.withAdditionalCharacteristics(DISTINCT);
+        this(count(dimensions), dimensions);
     }
 
-    private int[] getAt(long index) {
-        int[] val = new int[dimensions.length];
-        long dividend = index;
-        for(int k = dimensions.length - 1; k >= 0; k--) {
-            val[k] = (int)(dividend % dimensions[k]);
-            dividend /= dimensions[k];
-        }
-        return val;
+    public LongCartesianProduct(long count, int... dimensions) {
+        super(0, count);
+        if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
+        setValueSupplier(new CartesianProductSupplier.Long(count, dimensions));
+        this.withAdditionalCharacteristics(DISTINCT);
     }
 
     protected static long count(int[] dimensions) {

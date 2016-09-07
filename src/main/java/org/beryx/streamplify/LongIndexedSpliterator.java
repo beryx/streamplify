@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> implements Spliterator<T>, Streamable<T, S> {
     private static final Logger logger =  LoggerFactory.getLogger(LongPermutations.class);
 
-    private LongFunction<T> valueSupplier;
+    private Splittable.LongIndexed<T> valueSupplier;
     private long index;
     private final long fence;
     private int characteristics =  Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.IMMUTABLE;
@@ -44,7 +44,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         return (S)this;
     }
 
-    public final void setValueSupplier(LongFunction<T> valueSupplier) {
+    public final void setValueSupplier(Splittable.LongIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
     }
 
@@ -84,7 +84,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         if(index >= mid) return null;
         LongIndexedSpliterator<T,S> spliterator = new LongIndexedSpliterator<>(index, mid);
         spliterator.withAdditionalCharacteristics(characteristics);
-        spliterator.setValueSupplier(valueSupplier);
+        spliterator.setValueSupplier(valueSupplier.split());
         index = mid;
         return spliterator;
     }

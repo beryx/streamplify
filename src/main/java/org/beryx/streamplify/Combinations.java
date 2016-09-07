@@ -28,9 +28,9 @@ public class Combinations implements Streamable<int[], Combinations> {
         BigInteger count = count(n, k);
         BigInteger maxVal = count.multiply(BigInteger.valueOf(n - 1));
         if(maxVal.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
-            delegate = new LongCombinations(n, k);
+            delegate = new LongCombinations(count.longValueExact(), n, k);
         } else {
-            delegate = new BigIntegerCombinations(n, k);
+            delegate = new BigIntegerCombinations(count, n, k);
         }
     }
 

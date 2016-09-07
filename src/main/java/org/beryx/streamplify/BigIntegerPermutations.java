@@ -18,35 +18,15 @@ package org.beryx.streamplify;
 import java.math.BigInteger;
 
 public class BigIntegerPermutations extends BigIntegerIndexedSpliterator<int[], BigIntegerPermutations> {
-    private final int length;
-    private final BigInteger[] divisors;
-
     public BigIntegerPermutations(int length) {
-        super(BigInteger.ZERO, factorial(length));
-        if(length < 0) throw new IllegalArgumentException("Invalid permutation length: " + length);
-        this.length = length;
-        this.divisors = computeDivisors(length);
-        setValueSupplier(this::getAt);
-        this.withAdditionalCharacteristics(DISTINCT);
+        this(factorial(length), length);
     }
 
-    private int[] getAt(BigInteger index) {
-        int[] perm = new int[length];
-        for(int i = 0; i < length; i++)
-            perm[i] = i;
-
-        BigInteger dividend = index;
-        for(int step = 0; step < length - 1; step++) {
-            BigInteger[] quotientAndRemainder = dividend.divideAndRemainder(divisors[step]);
-            int idx = quotientAndRemainder[0].intValueExact();
-            if(idx > 0) {
-                int val = perm[step + idx];
-                System.arraycopy(perm, step, perm, step + 1, idx);
-                perm[step] = val;
-            }
-            dividend = quotientAndRemainder[1];
-        }
-        return perm;
+    BigIntegerPermutations(BigInteger factorial, int length) {
+        super(BigInteger.ZERO, factorial);
+        if(length < 0) throw new IllegalArgumentException("Invalid permutation length: " + length);
+        setValueSupplier(new PermutationSupplier.BigInt(length));
+        this.withAdditionalCharacteristics(DISTINCT);
     }
 
     public static BigInteger factorial(int n) {
@@ -56,16 +36,5 @@ public class BigIntegerPermutations extends BigIntegerIndexedSpliterator<int[], 
             fact = fact.multiply(BigInteger.valueOf(i));
         }
         return fact;
-    }
-
-    private static BigInteger[] computeDivisors(int len) {
-        if(len < 1) return null;
-        BigInteger[] divs = new BigInteger[len - 1];
-        BigInteger fac = BigInteger.ONE;
-        for(int i = 1; i < len; i++) {
-            fac = fac.multiply(BigInteger.valueOf(i));
-            divs[len - i - 1] = fac;
-        }
-        return divs;
     }
 }

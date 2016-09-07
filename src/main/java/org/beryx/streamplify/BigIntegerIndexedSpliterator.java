@@ -15,6 +15,9 @@
  */
 package org.beryx.streamplify;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigInteger;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -23,12 +26,15 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSpliterator<T,S>> implements Spliterator<T>, Streamable<T,S> {
-    private Function<BigInteger, T> valueSupplier;
+    private static final Logger logger =  LoggerFactory.getLogger(LongPermutations.class);
+
+    private Splittable.BigIntegerIndexed<T> valueSupplier;
     private BigInteger index;
     private final BigInteger fence;
     int characteristics = Spliterator.IMMUTABLE;
 
     protected BigIntegerIndexedSpliterator(BigInteger origin, BigInteger fence) {
+        logger.trace("BigIntegerIndexedSpliterator({}, {})", origin, fence);
         this.index = origin;
         this.fence = fence;
     }
@@ -39,7 +45,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         return (S)this;
     }
 
-    public final void setValueSupplier(Function<BigInteger, T> valueSupplier) {
+    public final void setValueSupplier(Splittable.BigIntegerIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
     }
 
@@ -83,7 +89,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         if(index.compareTo(mid) >= 0) return null;
         BigIntegerIndexedSpliterator<T,S> spliterator = new BigIntegerIndexedSpliterator<>(index, mid);
         spliterator.withAdditionalCharacteristics(characteristics);
-        spliterator.setValueSupplier(valueSupplier);
+        spliterator.setValueSupplier(valueSupplier.split());
         index = mid;
         return spliterator;
     }

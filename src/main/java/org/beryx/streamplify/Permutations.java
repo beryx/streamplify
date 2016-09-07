@@ -27,9 +27,9 @@ public class Permutations implements Streamable<int[], Permutations> {
     public Permutations(int length) {
         BigInteger count = factorial(length);
         if(count.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
-            delegate = new LongPermutations(length);
+            delegate = new LongPermutations(count.longValueExact(), length);
         } else {
-            delegate = new BigIntegerPermutations(length);
+            delegate = new BigIntegerPermutations(count, length);
         }
     }
 

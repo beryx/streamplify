@@ -16,7 +16,6 @@
 package org.beryx.streamplify;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import static org.beryx.streamplify.BigIntegerCartesianProduct.count;
 
@@ -26,9 +25,9 @@ public class CartesianProduct implements Streamable<int[], CartesianProduct> {
     public CartesianProduct(int... dimensions) {
         BigInteger count = count(dimensions);
         if(count.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
-            delegate = new LongCartesianProduct(dimensions);
+            delegate = new LongCartesianProduct(count.longValueExact(), dimensions);
         } else {
-            delegate = new BigIntegerCartesianProduct(dimensions);
+            delegate = new BigIntegerCartesianProduct(count, dimensions);
         }
     }
 
