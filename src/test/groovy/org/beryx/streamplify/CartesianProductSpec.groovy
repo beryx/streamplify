@@ -15,6 +15,9 @@
  */
 package org.beryx.streamplify
 
+import org.beryx.streamplify.product.BigIntegerCartesianProduct
+import org.beryx.streamplify.product.CartesianProduct
+import org.beryx.streamplify.product.LongCartesianProduct
 import spock.lang.Specification
 import spock.lang.Unroll
 

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.beryx.streamplify;
+package org.beryx.streamplify.combination;
+
+import org.beryx.streamplify.Streamable;
 
 import java.math.BigInteger;
 import java.util.stream.Stream;
-import static org.beryx.streamplify.BigIntegerCombinations.count;
 
 public class Combinations implements Streamable<int[], Combinations> {
     public static final int MAX_N = 50_000;
@@ -25,7 +26,7 @@ public class Combinations implements Streamable<int[], Combinations> {
     private final Streamable<int[], ?> delegate;
 
     public Combinations(int n, int k) {
-        BigInteger count = count(n, k);
+        BigInteger count = BigIntegerCombinations.count(n, k);
         BigInteger maxVal = count.multiply(BigInteger.valueOf(n - 1));
         if(maxVal.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
             delegate = new LongCombinations(count.longValueExact(), n, k);

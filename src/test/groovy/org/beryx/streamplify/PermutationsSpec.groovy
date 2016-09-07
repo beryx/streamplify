@@ -15,6 +15,9 @@
  */
 package org.beryx.streamplify
 
+import org.beryx.streamplify.permutation.BigIntegerPermutations
+import org.beryx.streamplify.permutation.LongPermutations
+import org.beryx.streamplify.permutation.Permutations
 import spock.lang.Specification
 import spock.lang.Unroll
 

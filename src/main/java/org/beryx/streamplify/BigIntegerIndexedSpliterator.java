@@ -15,13 +15,13 @@
  */
 package org.beryx.streamplify;
 
+import org.beryx.streamplify.permutation.LongPermutations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 

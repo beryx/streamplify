@@ -13,33 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.beryx.streamplify;
+package org.beryx.streamplify.permutation;
+
+import org.beryx.streamplify.Streamable;
 
 import java.math.BigInteger;
 import java.util.stream.Stream;
-import static org.beryx.streamplify.BigIntegerCartesianProduct.count;
 
-public class CartesianProduct implements Streamable<int[], CartesianProduct> {
+public class Permutations implements Streamable<int[], Permutations> {
+    public static final int MAX_LENGTH = 20_000;
+
     private final Streamable<int[], ?> delegate;
 
-    public CartesianProduct(int... dimensions) {
-        BigInteger count = count(dimensions);
+    public Permutations(int length) {
+        BigInteger count = BigIntegerPermutations.factorial(length);
         if(count.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
-            delegate = new LongCartesianProduct(count.longValueExact(), dimensions);
+            delegate = new LongPermutations(count.longValueExact(), length);
         } else {
-            delegate = new BigIntegerCartesianProduct(count, dimensions);
+            delegate = new BigIntegerPermutations(count, length);
         }
     }
 
-    public CartesianProduct withAdditionalCharacteristics(int additionalCharacteristics) {
-    	delegate.withAdditionalCharacteristics(additionalCharacteristics);
-    	return this;
+    public Permutations withAdditionalCharacteristics(int additionalCharacteristics) {
+        delegate.withAdditionalCharacteristics(additionalCharacteristics);
+        return this;
     }
-
-    protected Streamable<int[], ?> getDelegate() {
-        return delegate;
-    }
-
+    
     @Override
     public Stream<int[]> stream() {
         return delegate.stream();

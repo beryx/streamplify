@@ -17,10 +17,10 @@ package org.beryx.streamplify;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.LongFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.beryx.streamplify.permutation.LongPermutations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

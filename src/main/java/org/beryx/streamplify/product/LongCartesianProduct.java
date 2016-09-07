@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.beryx.streamplify;
+package org.beryx.streamplify.product;
+
+import org.beryx.streamplify.LongIndexedSpliterator;
 
 import java.math.BigInteger;
 import java.util.Arrays;
