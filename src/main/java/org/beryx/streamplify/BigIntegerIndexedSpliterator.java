@@ -16,6 +16,8 @@
 package org.beryx.streamplify;
 
 import org.beryx.streamplify.permutation.LongPermutations;
+import org.beryx.streamplify.shuffler.DefaultBigIntegerShuffler;
+import org.beryx.streamplify.shuffler.NullBigIntegerShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     private BigInteger index;
     private final BigInteger fence;
     int characteristics = Spliterator.IMMUTABLE;
+    private BigIntegerShuffler shuffler = NullBigIntegerShuffler.INSTANCE;
 
     protected BigIntegerIndexedSpliterator(BigInteger origin, BigInteger fence) {
         logger.trace("BigIntegerIndexedSpliterator({}, {})", origin, fence);
@@ -56,6 +59,16 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     
     protected BigInteger getFence() {
         return fence;
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return StreamSupport.stream(this, false);
+    }
+
+    @Override
+    public Stream<T> parallelStream() {
+        return StreamSupport.stream(this, true);
     }
 
     @Override
@@ -100,7 +113,8 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     public boolean tryAdvance(Consumer<? super T> action) {
         if (action == null) throw new NullPointerException();
         if (index.compareTo(BigInteger.ZERO) >= 0 && index.compareTo(fence) < 0) {
-            T val = valueSupplier.apply(index);
+            BigInteger shuffledIndex = shuffler.getShuffledIndex(index);
+            T val = valueSupplier.apply(shuffledIndex);
             index = index.add(BigInteger.ONE);
             action.accept(val);
             return true;
@@ -115,6 +129,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         BigIntegerIndexedSpliterator<T,S> spliterator = new BigIntegerIndexedSpliterator<>(index, mid);
         spliterator.withAdditionalCharacteristics(characteristics);
         spliterator.setValueSupplier(valueSupplier.split());
+        spliterator.setShuffler(shuffler);
         index = mid;
         return spliterator;
     }
@@ -124,20 +139,22 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         if (action == null) throw new NullPointerException();
         if(index.compareTo(BigInteger.ZERO) >= 0 && index.compareTo(fence) < 0) {
             for(BigInteger i = index; i.compareTo(fence) < 0; i = i.add(BigInteger.ONE)) {
-                T val = valueSupplier.apply(i);
+                BigInteger shuffledIndex = shuffler.getShuffledIndex(i);
+                T val = valueSupplier.apply(shuffledIndex);
                 action.accept(val);
             }
             index = fence;
         }
     }
 
-    @Override
-    public Stream<T> stream() {
-        return StreamSupport.stream(this, false);
+
+    protected void setShuffler(BigIntegerShuffler shuffler) {
+        this.shuffler = shuffler;
     }
 
     @Override
-    public Stream<T> parallelStream() {
-        return StreamSupport.stream(this, true);
+    public S shuffle() {
+        shuffler = new DefaultBigIntegerShuffler(fence);
+        return (S)this;
     }
 }

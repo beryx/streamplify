@@ -22,6 +22,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.beryx.streamplify.permutation.LongPermutations;
+import org.beryx.streamplify.shuffler.DefaultLongShuffler;
+import org.beryx.streamplify.shuffler.LongShuffler;
+import org.beryx.streamplify.shuffler.NullLongShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +35,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     private long index;
     private final long fence;
     private int characteristics =  Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.IMMUTABLE;
+    private LongShuffler shuffler = NullLongShuffler.INSTANCE;
 
     protected LongIndexedSpliterator(long origin, long fence) {
     	logger.trace("LongIndexedSpliterator({}, {})", origin, fence);
@@ -56,6 +60,16 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     
     protected final long getFence() {
         return fence;
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return StreamSupport.stream(this, false);
+    }
+
+    @Override
+    public Stream<T> parallelStream() {
+        return StreamSupport.stream(this, true);
     }
 
     @Override
@@ -101,7 +115,8 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     public boolean tryAdvance(Consumer<? super T> action) {
         if (action == null) throw new NullPointerException();
         if (index >= 0 && index < fence) {
-            T val = valueSupplier.apply(index);
+            long shuffledIndex = shuffler.getShuffledIndex(index);
+            T val = valueSupplier.apply(shuffledIndex);
             index++;
             action.accept(val);
             return true;
@@ -116,6 +131,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         LongIndexedSpliterator<T,S> spliterator = new LongIndexedSpliterator<>(index, mid);
         spliterator.withAdditionalCharacteristics(characteristics);
         spliterator.setValueSupplier(valueSupplier.split());
+        spliterator.setShuffler(shuffler);
         index = mid;
         return spliterator;
     }
@@ -125,20 +141,21 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         if (action == null) throw new NullPointerException();
         if(index >= 0 && index < fence) {
             for(long i = index; i < fence; i++) {
-                T val = valueSupplier.apply(i);
+                long shuffledIndex = shuffler.getShuffledIndex(i);
+                T val = valueSupplier.apply(shuffledIndex);
                 action.accept(val);
             }
             index = fence;
         }
     }
 
-    @Override
-    public Stream<T> stream() {
-        return StreamSupport.stream(this, false);
+    protected void setShuffler(LongShuffler shuffler) {
+        this.shuffler = shuffler;
     }
 
     @Override
-    public Stream<T> parallelStream() {
-        return StreamSupport.stream(this, true);
+    public S shuffle() {
+        shuffler = new DefaultLongShuffler(fence);
+        return (S)this;
     }
 }

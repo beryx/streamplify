@@ -16,23 +16,7 @@
 package org.beryx.streamplify;
 
 import java.math.BigInteger;
-import java.util.Spliterator;
-import java.util.stream.Stream;
 
-public interface Streamable<T, S extends Streamable<T,S>> {
-    Stream<T> stream();
-    Stream<T> parallelStream();
-    /** @return -1 if the number of elements in the stream is too big to be fit in a long. **/
-    long count();
-
-    /** @return the number of elements in the stream as BigInteger. **/
-    BigInteger bigCount();
-
-    S withAdditionalCharacteristics(int additionalCharacteristics);
-    default S ordered() {
-    	return withAdditionalCharacteristics(Spliterator.ORDERED);
-    }
-    S skip(long n);
-    S skip(BigInteger n);
-    S shuffle();
+public interface BigIntegerShuffler {
+    BigInteger getShuffledIndex(BigInteger index);
 }

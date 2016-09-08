@@ -13,26 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.beryx.streamplify;
+package org.beryx.streamplify.shuffler;
+
+import org.beryx.streamplify.BigIntegerShuffler;
 
 import java.math.BigInteger;
-import java.util.Spliterator;
-import java.util.stream.Stream;
 
-public interface Streamable<T, S extends Streamable<T,S>> {
-    Stream<T> stream();
-    Stream<T> parallelStream();
-    /** @return -1 if the number of elements in the stream is too big to be fit in a long. **/
-    long count();
+public enum NullBigIntegerShuffler implements BigIntegerShuffler {
+    INSTANCE;
 
-    /** @return the number of elements in the stream as BigInteger. **/
-    BigInteger bigCount();
-
-    S withAdditionalCharacteristics(int additionalCharacteristics);
-    default S ordered() {
-    	return withAdditionalCharacteristics(Spliterator.ORDERED);
+    @Override
+    public final BigInteger getShuffledIndex(BigInteger index) {
+        return index;
     }
-    S skip(long n);
-    S skip(BigInteger n);
-    S shuffle();
 }

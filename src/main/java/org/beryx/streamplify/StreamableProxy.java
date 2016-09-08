@@ -55,4 +55,9 @@ public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implemen
     public S skip(BigInteger n) {
         return (S)getDelegate().skip(n);
     }
+
+    @Override
+    public S shuffle() {
+        return (S)getDelegate().shuffle();
+    }
 }
