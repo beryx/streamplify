@@ -15,6 +15,9 @@
  */
 package org.beryx.streamplify.shuffler;
 
+@FunctionalInterface
 public interface LongShuffler {
+    LongShuffler IDENTITY = index -> index;
+
     long getShuffledIndex(long index);
 }

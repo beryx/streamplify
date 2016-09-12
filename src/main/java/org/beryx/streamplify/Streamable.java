@@ -32,7 +32,7 @@ public interface Streamable<T, S extends Streamable<T,S>> {
     default S ordered() {
     	return withAdditionalCharacteristics(Spliterator.ORDERED);
     }
-    S skip(long n);
-    S skip(BigInteger n);
-    S shuffle();
+    <Z extends Streamable<T,?>> Z skip(long n);
+    <Z extends Streamable<T,?>> Z skip(BigInteger n);
+    <Z extends Streamable<T,?>> Z shuffle();
 }

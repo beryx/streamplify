@@ -19,9 +19,36 @@ import java.math.BigInteger;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 
+@FunctionalInterface
 public interface Splittable<S extends Splittable<S>> {
-    public static interface LongIndexed<T> extends LongFunction<T>, Splittable<LongIndexed<T>> {}
-    public static interface BigIntegerIndexed<T> extends Function<BigInteger, T>, Splittable<BigIntegerIndexed<T>> {}
+    interface LongIndexed<T> extends LongFunction<T>, Splittable<LongIndexed<T>> {
+        LongIndexed<Long> IDENTITY = new LongIndexed<Long>() {
+            @Override
+            public LongIndexed<Long> split() {
+                return this;
+            }
+
+            @Override
+            public Long apply(long value) {
+                return value;
+            }
+        };
+    }
+
+    interface BigIntegerIndexed<T> extends Function<BigInteger, T>, Splittable<BigIntegerIndexed<T>> {
+        BigIntegerIndexed<BigInteger> IDENTITY = new BigIntegerIndexed<BigInteger>() {
+            @Override
+            public BigIntegerIndexed<BigInteger> split() {
+                return this;
+            }
+
+            @Override
+            public BigInteger apply(BigInteger value) {
+                return value;
+            }
+        };
+
+    }
 
     S split();
 }

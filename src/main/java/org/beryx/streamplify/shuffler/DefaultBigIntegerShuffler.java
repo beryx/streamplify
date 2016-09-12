@@ -15,8 +15,6 @@
  */
 package org.beryx.streamplify.shuffler;
 
-import org.beryx.streamplify.BigIntegerShuffler;
-
 import java.math.BigInteger;
 import java.util.Random;
 

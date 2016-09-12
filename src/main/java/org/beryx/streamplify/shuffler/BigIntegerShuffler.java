@@ -15,15 +15,11 @@
  */
 package org.beryx.streamplify.shuffler;
 
-import org.beryx.streamplify.BigIntegerShuffler;
-
 import java.math.BigInteger;
 
-public enum NullBigIntegerShuffler implements BigIntegerShuffler {
-    INSTANCE;
+@FunctionalInterface
+public interface BigIntegerShuffler {
+    BigIntegerShuffler IDENTITY = index -> index;
 
-    @Override
-    public final BigInteger getShuffledIndex(BigInteger index) {
-        return index;
-    }
+    BigInteger getShuffledIndex(BigInteger index);
 }

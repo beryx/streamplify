@@ -47,17 +47,17 @@ public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implemen
     }
 
     @Override
-    public S skip(long n) {
-        return (S)getDelegate().skip(n);
+    public <Z extends Streamable<T,?>> Z skip(long n) {
+        return (Z)getDelegate().skip(n);
     }
 
     @Override
-    public S skip(BigInteger n) {
-        return (S)getDelegate().skip(n);
+    public <Z extends Streamable<T,?>> Z skip(BigInteger n) {
+        return (Z)getDelegate().skip(n);
     }
 
     @Override
-    public S shuffle() {
-        return (S)getDelegate().shuffle();
+    public <Z extends Streamable<T,?>> Z shuffle() {
+        return (Z)getDelegate().shuffle();
     }
 }

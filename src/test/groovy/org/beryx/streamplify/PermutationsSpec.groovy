@@ -110,4 +110,26 @@ class PermutationsSpec extends Specification {
         2         | ['[0, 1]', '[1, 0]']
         3         | ['[0, 1, 2]', '[0, 2, 1]', '[1, 0, 2]', '[1, 2, 0]', '[2, 0, 1]', '[2, 1, 0]']
     }
+
+    def "should skip correctly #skip permutations with length #length"() {
+        given:
+        def stream = new Permutations(length).skip(skip).stream()
+
+        when:
+        def perm = stream.map { int[] arr -> (arr as List).toString() }.findFirst().orElse('')
+
+        then:
+        perm == permutation
+
+        where:
+        length | skip                                            | permutation
+        2      | 0                                               | '[0, 1]'
+        2      | 1                                               | '[1, 0]'
+        2      | 2                                               | ''
+        2      | 3                                               | ''
+        3      | 4                                               | '[2, 0, 1]'
+        25     | 5                                               | '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 23, 22]'
+        25     | (new BigInteger('12345678901234567890123456'))  | '[19, 22, 12, 16, 5, 3, 2, 7, 17, 21, 10, 4, 8, 24, 6, 18, 20, 23, 9, 11, 15, 0, 1, 13, 14]'
+        25     | (new BigInteger('123456789012345678901234567')) | ''
+    }
 }

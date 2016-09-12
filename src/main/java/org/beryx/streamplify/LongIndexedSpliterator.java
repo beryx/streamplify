@@ -24,7 +24,6 @@ import java.util.stream.StreamSupport;
 import org.beryx.streamplify.permutation.LongPermutations;
 import org.beryx.streamplify.shuffler.DefaultLongShuffler;
 import org.beryx.streamplify.shuffler.LongShuffler;
-import org.beryx.streamplify.shuffler.NullLongShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +34,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     private long index;
     private final long fence;
     private int characteristics =  Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.IMMUTABLE;
-    private LongShuffler shuffler = NullLongShuffler.INSTANCE;
+    private LongShuffler shuffler = LongShuffler.IDENTITY;
 
     protected LongIndexedSpliterator(long origin, long fence) {
     	logger.trace("LongIndexedSpliterator({}, {})", origin, fence);

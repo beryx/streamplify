@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.beryx.streamplify.shuffler;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import ch.qos.logback.core.ConsoleAppender
 
-public enum NullLongShuffler implements LongShuffler {
-    INSTANCE;
+import static ch.qos.logback.classic.Level.OFF
 
-    @Override
-    public final long getShuffledIndex(long index) {
-        return index;
+appender("STDOUT", ConsoleAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
     }
 }
+//logger("org.beryx.streamplify", TRACE)
+root(OFF, ["STDOUT"])

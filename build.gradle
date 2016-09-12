@@ -81,9 +81,6 @@ def defaultEncoding = 'UTF-8'
 [compileGroovy, compileTestGroovy]*.options*.encoding = defaultEncoding
 [compileGroovy, compileTestGroovy]*.groovyOptions*.encoding = defaultEncoding
 
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDirs = ["src/main/java", "src/main/groovy"]
-
 configurations {
   provided
   compile {transitive = true}
@@ -104,11 +101,11 @@ signArchives {
 }
 
 dependencies {
-  compile "org.codehaus.groovy:groovy-all:$groovyVersion"
   compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-  compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
   provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
+  testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+  testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
   testCompile('org.spockframework:spock-core:1.1-groovy-2.4-rc-2') {
       exclude module: 'groovy-all'
   }
@@ -138,32 +135,8 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
-groovydoc {
-  docTitle "Streamplify Documentation ($streamplifyVersion)"
-  windowTitle "Streamplify Documentation ($streamplifyVersion)"
-  destinationDir file("build/groovydoc")
-  source groovydoc.source + javadoc.source
-}
-
-configureGroovydoc(groovydoc)
-
-def configureGroovydoc(task) {
-  configure(task) {
-    if(project.configurations.hasProperty('provided')) {
-        classpath += project.configurations.provided
-    }
-    link "http://docs.oracle.com/javase/8/docs/api/", 'java'
-    link "http://docs.groovy-lang.org/docs/groovy-$groovyVersion/html/gapi/", "groovy"
-  }
-}
-
-task groovydocJar(type: Jar, dependsOn: classes) {
-    classifier "javadoc"
-    from groovydoc
-}
-
 artifacts {
-    (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar, groovydocJar)
+    (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar)
 }
 
 publishing {
@@ -171,7 +144,6 @@ publishing {
         "$project.name"(MavenPublication) {
             from components.java
             artifact sourcesJar { classifier "sources" }
-            artifact groovydocJar { classifier "javadoc" }
             groupId 'org.beryx'
             artifactId project.name
             version streamplifyVersion

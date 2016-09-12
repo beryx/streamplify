@@ -16,8 +16,8 @@
 package org.beryx.streamplify;
 
 import org.beryx.streamplify.permutation.LongPermutations;
+import org.beryx.streamplify.shuffler.BigIntegerShuffler;
 import org.beryx.streamplify.shuffler.DefaultBigIntegerShuffler;
-import org.beryx.streamplify.shuffler.NullBigIntegerShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     private BigInteger index;
     private final BigInteger fence;
     int characteristics = Spliterator.IMMUTABLE;
-    private BigIntegerShuffler shuffler = NullBigIntegerShuffler.INSTANCE;
+    private BigIntegerShuffler shuffler = BigIntegerShuffler.IDENTITY;
 
     protected BigIntegerIndexedSpliterator(BigInteger origin, BigInteger fence) {
         logger.trace("BigIntegerIndexedSpliterator({}, {})", origin, fence);

@@ -31,7 +31,7 @@ public class LongPermutations extends LongIndexedSpliterator<int[], LongPermutat
         this.withAdditionalCharacteristics(DISTINCT);
     }
 
-    protected static long factorial(int len) {
+    public static long factorial(int len) {
         BigInteger bigCount = BigIntegerPermutations.factorial(len);
         if(bigCount.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) >= 0) throw new IllegalArgumentException("Permutation length too big: " + len);
         return bigCount.longValueExact();
