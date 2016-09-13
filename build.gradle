@@ -1,4 +1,3 @@
-
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.plugins.signing.Sign
 
@@ -46,164 +45,131 @@ def pomConfig = {
     }
 }
 
-ext.groovyVersion = '2.4.7'
-
-
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:all,-syntax,-missing', '-quiet')
-}
-
-
-
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'findbugs'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'signing'
-apply plugin: 'com.github.hierynomus.license'
-apply plugin: 'com.github.jk1.dependency-license-report'
-
-
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
-sourceCompatibility = 1.8
-group = 'org.beryx'
-version = streamplifyVersion
-
-def defaultEncoding = 'UTF-8'
-[compileJava, compileTestJava]*.options*.encoding = defaultEncoding
-
-[compileGroovy, compileTestGroovy]*.options*.encoding = defaultEncoding
-[compileGroovy, compileTestGroovy]*.groovyOptions*.encoding = defaultEncoding
-
-configurations {
-  provided
-  compile {transitive = true}
-}
-
-license {
-    header rootProject.file("license-header.txt")
-    skipExistingHeaders true
-    ignoreFailures false
-}
-
-signing {
-    sign configurations.archives
-}
-
-signArchives {
-  onlyIf { gradle.taskGraph.allTasks.findAll {task -> isPublishTask(task)} }
-}
-
-dependencies {
-  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
-  provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
-
-  testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
-  testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
-  testCompile('org.spockframework:spock-core:1.1-groovy-2.4-rc-2') {
-      exclude module: 'groovy-all'
-  }
-  testCompile 'cglib:cglib-nodep:3.2.4'
-  testCompile 'org.objenesis:objenesis:2.4'
-  testCompile('com.athaydes:spock-reports:1.2.12') { transitive = false}
-
-}
-
-sourceSets.main.compileClasspath += configurations.provided
-
-findbugs {
-    effort = "max"
-    excludeFilter = file("$rootProject.projectDir/findbugsExclude.xml")
-}
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': "${project.archivesBaseName}",
-                'Implementation-Version': streamplifyVersion,
-                'Implementation-Vendor-Id': 'beryx.org'
+allprojects {    
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:all,-syntax,-missing', '-quiet')
     }
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+def defaultEncoding = 'UTF-8'
 
-artifacts {
-    (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar)
-}
+subprojects {    
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'findbugs'
+    apply plugin: 'com.github.ben-manes.versions'
+    apply plugin: 'signing'
+    apply plugin: 'com.github.hierynomus.license'
+    apply plugin: 'com.github.jk1.dependency-license-report'
 
-publishing {
-    publications {
-        "$project.name"(MavenPublication) {
-            from components.java
-            artifact sourcesJar { classifier "sources" }
-            groupId 'org.beryx'
-            artifactId project.name
-            version streamplifyVersion
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('name', "Module $project.name")
-                root.appendNode('description', "The $project.name artifact")
-                root.children().last() + pomConfig
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    
+    sourceCompatibility = 1.8
+    group = 'org.beryx'
+    version = streamplifyVersion
+    
+    [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+    
+    configurations {
+      provided
+      compile {transitive = true}
+    }
+    
+    license {
+        header rootProject.file("license-header.txt")
+        skipExistingHeaders true
+        ignoreFailures false
+    }
+    
+    signing {
+        sign configurations.archives
+    }
+    
+    signArchives {
+      onlyIf { gradle.taskGraph.allTasks.findAll {task -> isPublishTask(task)} }
+    }
+    
+    dependencies {      
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+        provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
+    }
+    
+    sourceSets.main.compileClasspath += configurations.provided
+    
+    findbugs {
+        effort = "max"
+        excludeFilter = file("$rootProject.projectDir/findbugsExclude.xml")
+    }
+    
+    jar {
+        manifest {
+            attributes 'Implementation-Title': "${project.archivesBaseName}",
+                    'Implementation-Version': streamplifyVersion,
+                    'Implementation-Vendor-Id': 'beryx.org'
+        }
+    }
+    
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    
+    configureJavadoc(javadoc)
+    
+    task javadocJar(type: Jar, dependsOn: classes) {
+        classifier "javadoc"
+        from javadoc
+    }
+    
+    artifacts {
+        (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar, javadocJar)
+    }
 
-                // We cannot configure the licenses in pomConfig due to a name conflict with the 'license' extension defined by the com.github.hierynomus.license plugin
-                def licenseNode = root.appendNode('licenses').appendNode('license')
-                licenseNode.appendNode('name', 'The Apache Software License, Version 2.0')
-                licenseNode.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
-                licenseNode.appendNode('distribution', 'repo')
+    task "create-dirs" << {
+       sourceSets*.java.srcDirs*.each { it.mkdirs() }
+       
+       sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    }
+    
+    
+    ///////////  ECLIPSE  //////////////////
+    def resourcesDir = 'src/main/resources/'
+    eclipse.classpath.file {
+        beforeMerged { classpath ->
+            classpath.entries.removeAll()
+        }
+        whenMerged { classpath ->
+            classpath.entries.findAll { entry -> entry.kind == 'lib' }*.exported = true
+            classpath.entries.removeAll { entry -> entry.kind == 'src' && entry.path.contains('/resources') }
+            classpath.entries.add(new org.gradle.plugins.ide.eclipse.model.SourceFolder(resourcesDir, null))
+            classpath.entries.findAll { entry -> entry.kind == 'con' && entry.path.contains('StandardVMType') }.each { entry ->
+                entry.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('accessible', 'javafx/**'))
             }
         }
     }
-}
-
-task "create-dirs" << {
-   sourceSets*.java.srcDirs*.each { it.mkdirs() }
-   sourceSets*.groovy.srcDirs*.each { it.mkdirs() }
-   sourceSets*.resources.srcDirs*.each { it.mkdirs() }
-}
-
-
-///////////  ECLIPSE  //////////////////
-def resourcesDir = 'src/main/resources/'
-eclipse.classpath.file {
-    beforeMerged { classpath ->
-        classpath.entries.removeAll()
-    }
-    whenMerged { classpath ->
-        classpath.entries.findAll { entry -> entry.kind == 'lib' }*.exported = true
-        classpath.entries.removeAll { entry -> entry.kind == 'src' && entry.path.contains('/resources') }
-        classpath.entries.add(new org.gradle.plugins.ide.eclipse.model.SourceFolder(resourcesDir, null))
-        classpath.entries.findAll { entry -> entry.kind == 'con' && entry.path.contains('StandardVMType') }.each { entry ->
-            entry.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('accessible', 'javafx/**'))
+    
+    eclipse {
+        project {
+            file.beforeMerged { project ->
+                project.natures.clear()
+            }
+        }
+        classpath {
+            plusConfigurations << configurations.provided
         }
     }
-}
-
-eclipse {
-    project {
-        file.beforeMerged { project ->
-            project.natures.clear()
-        }
-    }
-    classpath {
-        plusConfigurations << configurations.provided
+    
+    /////////////  IDEA  ///////////////////
+    idea {
+      module {
+        scopes.PROVIDED.plus += [configurations.provided]
+      }
     }
 }
-
-/////////////  IDEA  ///////////////////
-idea {
-  module {
-    scopes.PROVIDED.plus += [configurations.provided]
-  }
-}
-
 
 def gitIgnore = file(".gitignore").readLines()
 def gitIgnoreDirs = gitIgnore*.trim().findAll { !it.startsWith("#") && it.endsWith("/") }
@@ -277,6 +243,76 @@ githubPages {
     }
   }
 
+}
+
+project('streamplify') {    
+    apply plugin: 'groovy'
+
+    [compileGroovy, compileTestGroovy]*.options*.encoding = defaultEncoding
+    [compileGroovy, compileTestGroovy]*.groovyOptions*.encoding = defaultEncoding
+
+    dependencies {
+        testCompile "org.codehaus.groovy:groovy-all:2.4.7"
+        testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+        testCompile('org.spockframework:spock-core:1.1-groovy-2.4-rc-2') {
+          exclude module: 'groovy-all'
+        }
+        testCompile 'cglib:cglib-nodep:3.2.4'
+        testCompile 'org.objenesis:objenesis:2.4'
+        testCompile('com.athaydes:spock-reports:1.2.12') { transitive = false}      
+    }
+
+    publishing {
+        publications {
+            "$project.name"(MavenPublication) {
+                from components.java
+                artifact sourcesJar { classifier "sources" }
+                artifact javadocJar { classifier "javadoc" }
+                groupId 'org.beryx'
+                artifactId project.name
+                version streamplifyVersion
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('name', "Module $project.name")
+                    root.appendNode('description', "The $project.name artifact")
+                    root.children().last() + pomConfig
+
+                    // We cannot configure the licenses in pomConfig due to a name conflict with the 'license' extension defined by the com.github.hierynomus.license plugin
+                    def licenseNode = root.appendNode('licenses').appendNode('license')
+                    licenseNode.appendNode('name', 'The Apache Software License, Version 2.0')
+                    licenseNode.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                    licenseNode.appendNode('distribution', 'repo')
+                }
+            }
+        }
+    }
+}
+
+project('streamplify-examples') {    
+    dependencies {
+        compile project(':streamplify')
+        compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    }
+}
+
+task javadoc(type: Javadoc) {
+    title "Streamplify Documentation ($streamplifyVersion)"
+    destinationDir file("build/javadoc")
+    source subprojects.javadoc.source
+    classpath = files(subprojects.javadoc.classpath)
+}
+
+configureJavadoc(javadoc)
+
+def configureJavadoc(task) {
+  configure(task) {
+      if(project.configurations.hasProperty('provided')) {
+          classpath += project.configurations.provided
+      }
+      configure(options) {
+          links "http://docs.oracle.com/javase/6/docs/api/"
+      }
+  }
 }
 
 def readFromConsole(prompt) {

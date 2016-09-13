@@ -25,7 +25,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- *
+ * This benchmark shows that in situations where the iterator's next() method is time consuming,
+ * the {@code IteratorSpliterator} created by {@link Spliterators#spliterator(Iterator, long, int)} is not adequate for parallel processing,
+ * and the {@link LongIndexedSpliterator} should be used instead.
  */
 public class DelayedBenchmark {
     private final long count;
@@ -42,11 +44,7 @@ public class DelayedBenchmark {
             setValueSupplier(new Splittable.LongIndexed<Long>() {
                 @Override
                 public Long apply(long value) {
-                    try {
-                        Thread.sleep(delay);
-                    } catch (InterruptedException e) {
-                        System.err.println("Interrupted");
-                    }
+                    busy(delay);
                     return value;
                 }
 
@@ -69,12 +67,16 @@ public class DelayedBenchmark {
 
         @Override
         public Long next() {
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                System.err.println("Interrupted");
-            }
+            busy(delay);
             return index++;
+        }
+    }
+
+    private static void busy(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            System.err.println("Interrupted");
         }
     }
 
@@ -109,9 +111,13 @@ public class DelayedBenchmark {
 
         System.out.println("duration(IterSpliter) = " + duration2 + " ms.");
         System.out.println("--------------------------------------------------------");
-
     }
 
+    /**
+     * Compares the performance of the implementation using {@link LongIndexedSpliterator} with
+     * that of the {@code IteratorSpliterator} created by {@link Spliterators#spliterator(Iterator, long, int)}.
+     * <br>On multicore and multiprocessor systems, the implementation based on {@link LongIndexedSpliterator} is typically faster.
+     */
     public static void main(String[] args) {
         new DelayedBenchmark(1000, 10).run();
         new DelayedBenchmark(1000, 100).run();

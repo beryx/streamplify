@@ -24,6 +24,11 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * This class is functionally equivalent to {@link LongPermutations}, but it doesn't use the {@link org.beryx.streamplify.LongIndexedSpliterator}.
+ * <br>Instead, it uses the {@code IteratorSpliterator} created by {@link Spliterators#spliterator(Iterator, long, int)}.
+ * <br>{@link NQueensBenchmark} compares the performance of this class with that of {@link LongPermutations}.
+ */
 public class IterSpliterPermutations {
     private final int length;
     private final long count;

@@ -47,7 +47,7 @@ public class Fibonacci extends LongIndexedSpliterator<BigInteger, Fibonacci> {
         withAdditionalCharacteristics(Spliterator.DISTINCT);
     }
 
-    private static class Supplier implements Splittable.LongIndexed<BigInteger> {
+    public static class Supplier implements Splittable.LongIndexed<BigInteger> {
         long currentIndex = -2;
         BigInteger lastVal;
         BigInteger beforeLastVal;
@@ -74,7 +74,7 @@ public class Fibonacci extends LongIndexedSpliterator<BigInteger, Fibonacci> {
          * <br>F(2*k) = F(k) * (2 * F(k+1) − F(k))
          * <br>F(2*k+1) = F(k+1)^2 + F(k)^2
          */
-        private static BigInteger forIndex(int index) {
+        public static BigInteger forIndex(int index) {
             if(index == 0) return BigInteger.ZERO;
             if(index == 1 || index == 2) return BigInteger.ONE;
             if(index % 2 == 0) {
@@ -98,7 +98,7 @@ public class Fibonacci extends LongIndexedSpliterator<BigInteger, Fibonacci> {
          * The code is shorter, but involves time consuming BigDecimal computations.
          * Using this method instead of the original forIndex will lead to situations where running in parallel takes longer than running sequentially.
          */
-        private static BigInteger forIndexBinet(int index) {
+        public static BigInteger forIndexBinet(int index) {
             return PHI.pow(index).subtract(PSI.pow(index)).divide(SQRT_5).toBigInteger();
         }
 

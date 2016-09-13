@@ -17,8 +17,17 @@ package org.beryx.streamplify.benchmark;
 
 import org.beryx.streamplify.permutation.LongPermutations;
 
+import java.util.Iterator;
+import java.util.Spliterators;
 import java.util.stream.Stream;
 
+/**
+ * Compares the performance of {@link LongPermutations} with that of {@link IterSpliterPermutations},
+ * which is a functionally equivalent class, but uses the {@code IteratorSpliterator} created by {@link Spliterators#spliterator(Iterator, long, int)}.
+ * <br>The benchmark applies a filter for selecting those permutations that represent solutions of the N-Queens problem.
+ * <br>On multicore and multiprocessor systems, the parallel version using {@link LongPermutations} is typically faster than the one using {@link IterSpliterPermutations}.
+ * <br>When using sequential streams, the performance of {@link LongPermutations} is typically comparable to that of {@link IterSpliterPermutations}.
+ */
 public class NQueensBenchmark {
     private final int length;
     private final boolean parallel;
