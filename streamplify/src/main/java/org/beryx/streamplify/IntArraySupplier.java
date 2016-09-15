@@ -15,11 +15,40 @@
  */
 package org.beryx.streamplify;
 
+/**
+ * This interface acts as a trait that helps implementing the valueSupplier requested by indexed-spliterators
+ * (such as {@link LongIndexedSpliterator} or {@link BigIntegerIndexedSpliterator}) with the type parameter {@code int[]}.
+ * <br>There is an implicit assumption that the implementing class uses an index (or some similar information) in order to decide
+ * whether the value to be supplied can be computed based on the previous value or based on the index.
+ */
 public interface IntArraySupplier {
+    /** @return the current sequence provided by this value supplier */
     int[] getCurrentSequence();
+
+    /**
+     * Computes the value to be supplied next, using the currently supplied value.
+     * The next call of {@link #getCurrentSequence()} should return this newly computed value.
+     */
     void computeNext();
+
+    /**
+     * @return the next value to be supplied.
+     * It is assumed that the next value cannot be obtained using the current one,
+     * but it has to be computed based on an index (or some similar information) handled by the implementing class.
+     */
     int[] unrank();
 
+    /**
+     * Retrieves the next value to be supplied.
+     * Postcondition: a call to {@link #getCurrentSequence()} will return an equal (but not identical) value.
+     * @param useNext true, if the next value can be computed based on the current one;
+     * @return the next value to be supplied. This should not be a reference to the array that backs {@link #getCurrentSequence()}.
+     * @implSpec
+     * This default implementation assumes that the value returned by {@link #getCurrentSequence()} is
+     * a reference to the array containing the current sequence (and not a copy of it).
+     * <br>Therefore, modifying this value is a way to configure the value to be returned by the next call of {@link #getCurrentSequence()}.
+     * <br>if {@code useNext} is true, this implementation calls {@link #computeNext()}; otherwise, it calls {@link #unrank()}.
+     */
     default int[] getNextSequence(boolean useNext) {
         int[] currSeq = getCurrentSequence();
         int len = currSeq.length;

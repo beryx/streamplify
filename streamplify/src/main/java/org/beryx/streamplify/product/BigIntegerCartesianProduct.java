@@ -20,7 +20,14 @@ import org.beryx.streamplify.BigIntegerIndexedSpliterator;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+/**
+ * Provides streams of cartesian product tuples.
+ * <br>When the cardinality of the cartesian product can fit in a long, you may consider using the more efficient {@link LongCartesianProduct}.
+ */
 public class BigIntegerCartesianProduct extends BigIntegerIndexedSpliterator<int[], BigIntegerCartesianProduct> {
+    /**
+     * @param dimensions the cardinalities of the input sets.
+     */
     public BigIntegerCartesianProduct(int... dimensions) {
         this(count(dimensions), dimensions);
     }

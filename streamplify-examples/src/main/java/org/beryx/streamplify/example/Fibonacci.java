@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * <br>The {@link Supplier#apply(long)} method computes the Fibonacci number with the index given by its argument as follows:<ul>
  * <li>if the requested index is the successor of the previously computed index, it uses the recurrence formula: F(n) = F(n-1) + F(n-2)</li>
  * <li>otherwise, it uses the formula:
- * <br>F(2*k) = F(k) * (2 * F(k+1) − F(k))
+ * <br>F(2*k) = F(k) * (2 * F(k+1) - F(k))
  * <br>F(2*k+1) = F(k+1)^2 + F(k)^2
  * </li>
  * </ul>

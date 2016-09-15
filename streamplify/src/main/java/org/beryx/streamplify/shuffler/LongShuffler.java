@@ -15,9 +15,16 @@
  */
 package org.beryx.streamplify.shuffler;
 
+/**
+ * Provides a way of shuffling long indices.
+ * The shuffling function should be a permutation of the set of indices.
+ */
 @FunctionalInterface
 public interface LongShuffler {
     LongShuffler IDENTITY = index -> index;
 
+    /**
+     * Retrieves the value corresponding to {@code index} in the permutation associated with this shuffler.
+     */
     long getShuffledIndex(long index);
 }

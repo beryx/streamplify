@@ -27,6 +27,9 @@ import org.beryx.streamplify.shuffler.LongShuffler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * An indexed-spliterator that uses a long index.
+ */
 public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> implements Spliterator<T>, Streamable<T, S> {
     private static final Logger logger =  LoggerFactory.getLogger(LongPermutations.class);
 
@@ -153,8 +156,8 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     }
 
     @Override
-    public S shuffle() {
-        shuffler = new DefaultLongShuffler(fence);
+    public S shuffle(Random rnd) {
+        shuffler = new DefaultLongShuffler(fence, rnd);
         return (S)this;
     }
 }

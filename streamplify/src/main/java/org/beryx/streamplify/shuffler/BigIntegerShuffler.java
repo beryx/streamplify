@@ -17,9 +17,16 @@ package org.beryx.streamplify.shuffler;
 
 import java.math.BigInteger;
 
+/**
+ * Provides a way of shuffling BigInteger indices.
+ * The shuffling function should be a permutation of the set of indices.
+ */
 @FunctionalInterface
 public interface BigIntegerShuffler {
     BigIntegerShuffler IDENTITY = index -> index;
 
+    /**
+     * Retrieves the value corresponding to {@code index} in the permutation associated with this shuffler.
+     */
     BigInteger getShuffledIndex(BigInteger index);
 }

@@ -20,6 +20,10 @@ import org.beryx.streamplify.Splittable;
 
 import java.math.BigInteger;
 
+/**
+ * A value supplier for permutations.
+ * <br>It may compute the next permutation based on the current one, or by unranking an index.
+ */
 public abstract class PermutationSupplier implements IntArraySupplier {
     protected final int length;
     protected final int[] currentPermutation;

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Generates <a href="https://en.wikipedia.org/wiki/Permutation#k-permutations_of_n">k-permutaions of n</a>.
+ * Generates <a href="https://en.wikipedia.org/wiki/Permutation#k-permutations_of_n">k-permutations of n</a>.
  * <br>This implementation makes use of the {@link Combinations} and {@link Permutations} classes.
  * It generates all k-combinations of n, and for each combination generates all permutations of its k elements.
  * <br>This is a simple and easy to understand solution.

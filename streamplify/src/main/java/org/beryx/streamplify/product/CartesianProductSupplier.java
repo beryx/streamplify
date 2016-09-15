@@ -20,6 +20,10 @@ import org.beryx.streamplify.Splittable;
 
 import java.math.BigInteger;
 
+/**
+ * A value supplier for cartesian product.
+ * <br>It may compute the next tuple based on the current one, or by unranking an index.
+ */
 public abstract class CartesianProductSupplier implements IntArraySupplier {
     protected final int[] dimensions;
     protected final int[] currentProduct;

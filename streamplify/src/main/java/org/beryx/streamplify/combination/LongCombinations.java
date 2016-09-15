@@ -19,12 +19,20 @@ import org.beryx.streamplify.LongIndexedSpliterator;
 
 import java.math.BigInteger;
 
+/**
+ * Provides streams of combinations.
+ * <br>Can be used when the binomial coefficient (n choose k) is a number that can fit in a long.
+ * For bigger values, a {@link BigIntegerCombinations} is needed.
+ */
 public class LongCombinations extends LongIndexedSpliterator<int[], LongCombinations> {
+    /**
+     * {@code k}-combinations from a set of {@code n} elements
+     */
     public LongCombinations(int n, int k) {
         this(count(n, k), n, k);
     }
 
-    public LongCombinations(long count, int n, int k) {
+    LongCombinations(long count, int n, int k) {
         super(0, count);
         if(n < 0 || k < 0 || n < k) throw new IllegalArgumentException("Invalid (n,k): (" + n + "," + k + ")");
         this.setValueSupplier(new CombinationSupplier.Long(count, n, k));

@@ -18,19 +18,35 @@ package org.beryx.streamplify.shuffler;
 import java.math.BigInteger;
 import java.util.Random;
 
+/**
+ * An implementation of {@link BigIntegerShuffler} based on {@link ShufflerImpl}.
+ */
 public class DefaultBigIntegerShuffler implements BigIntegerShuffler {
     private final BigInteger count;
     private final ShufflerImpl shufflerImpl;
 
+    /**
+     * Constructs a shuffler for indices in the range [0 .. {@code count} - 1].
+     * @param count the number of indices in the range
+     */
     public DefaultBigIntegerShuffler(BigInteger count) {
         this(count, new Random());
     }
 
+    /**
+     * Constructs a shuffler for indices in the range [0 .. {@code count} - 1], specifying the random number generator to be used.
+     * @param count the number of indices in the range
+     * @param rnd the random number generator to be used
+     */
     public DefaultBigIntegerShuffler(BigInteger count, Random rnd) {
         this.count = count;
         this.shufflerImpl = new ShufflerImpl(rnd);
     }
 
+    /**
+     * @param seed the seed of the random generator used by this instance
+     * @return this instance
+     */
     public DefaultBigIntegerShuffler withSeed(long seed) {
         shufflerImpl.withSeed(seed);
         return this;

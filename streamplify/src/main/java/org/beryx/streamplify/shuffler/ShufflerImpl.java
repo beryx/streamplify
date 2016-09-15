@@ -18,6 +18,14 @@ package org.beryx.streamplify.shuffler;
 import java.math.BigInteger;
 import java.util.Random;
 
+/**
+ * A helper class that implements the shuffling logic used by the default shufflers ({@link DefaultLongShuffler} and {@link DefaultBigIntegerShuffler}).
+ * <br>This implementation is able to shuffle indices from very large sets.
+ * <br>The algorithm used by this class requires a constant amount of memory and runs in O(B) time,
+ * where B is the number of bytes used by the BigInteger internal representation of the cardinality of the set of indices.
+ * <br>Although it decently scatters the indices, this class will not produce uniformly distributed values
+ * (unless the set of indexes has a cardinality <= 256 and the random number generator produces uniformly distributed values).
+ */
 public class ShufflerImpl {
     private static final int BYTE_PERMUTATIONS_COUNT = 4;
 
@@ -25,6 +33,9 @@ public class ShufflerImpl {
     private final int[][] bytePermutations = new int[BYTE_PERMUTATIONS_COUNT][];
     private final int[][] bitPermutations = new int[8][];
 
+    /**
+     * @param rnd the random number generator used by this instance.
+     */
     public ShufflerImpl(Random rnd) {
         this.rnd = rnd;
         for(int i = 0; i < BYTE_PERMUTATIONS_COUNT; i++) {
@@ -35,11 +46,18 @@ public class ShufflerImpl {
         }
     }
 
+    /**
+     * @param seed the seed of the random generator used by this instance
+     * @return this instance
+     */
     public ShufflerImpl withSeed(long seed) {
         rnd.setSeed(seed);
         return this;
     }
 
+    /**
+     * Retrieves the long value corresponding to {@code index} in a permutation with {@code count} elements.
+     */
     public long getShuffledIndex(long index, long count) {
         BigInteger bigIndex = BigInteger.valueOf(index);
         BigInteger bigCount = BigInteger.valueOf(count);
@@ -47,6 +65,9 @@ public class ShufflerImpl {
         return bigShuffled.longValueExact();
     }
 
+    /**
+     * Retrieves the BigInteger value corresponding to {@code index} in a permutation with {@code count} elements.
+     */
     public BigInteger getShuffledIndex(BigInteger index, BigInteger count) {
         int bitCount = count.subtract(BigInteger.ONE).bitLength();
         int wholeBytes = bitCount / 8;
@@ -81,6 +102,9 @@ public class ShufflerImpl {
         else return getShuffledIndex(bigShuffled, count);
     }
 
+    /**
+     * @return a random permutation with the given {@code length}.
+     */
     public int[] getRandomPermutation(int length) {
         int[] perm = new int[length];
         for(int i = 0; i < length; i++) {

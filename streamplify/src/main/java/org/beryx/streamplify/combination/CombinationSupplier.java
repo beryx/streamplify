@@ -20,6 +20,10 @@ import org.beryx.streamplify.Splittable;
 
 import java.math.BigInteger;
 
+/**
+ * A value supplier for combinations.
+ * <br>It may compute the next combination based on the current one, or by unranking an index.
+ */
 public abstract class CombinationSupplier implements IntArraySupplier {
     protected final int n;
     protected final int k;

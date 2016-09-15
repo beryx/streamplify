@@ -20,11 +20,18 @@ import org.beryx.streamplify.StreamableProxy;
 
 import java.math.BigInteger;
 
+/**
+ * A {@link Streamable} providing streams of combinations.
+ * <br>This class is a proxy that delegates to either {@link LongCombinations} or {@link BigIntegerCombinations}, depending on the values of {@code n} and {@code k}.
+ */
 public class Combinations extends StreamableProxy<int[], Combinations> {
     public static final int MAX_N = 50_000;
 
     private final Streamable<int[], ?> delegate;
 
+    /**
+     * {@code k}-combinations from a set of {@code n} elements
+     */
     public Combinations(int n, int k) {
         BigInteger count = BigIntegerCombinations.count(n, k);
         BigInteger maxVal = count.multiply(BigInteger.valueOf(n - 1));

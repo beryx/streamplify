@@ -50,12 +50,12 @@ class PermutationsSpec extends Specification {
         thrown(IllegalArgumentException)
 
         where:
-        length                      | _
-        -1                          | _
-        -2                          | _
-        Permutations.MAX_LENGTH + 1 | _
-        Integer.MAX_VALUE           | _
-        -Integer.MAX_VALUE          | _
+        length                                | _
+        -1                                    | _
+        -2                                    | _
+        BigIntegerPermutations.MAX_LENGTH + 1 | _
+        Integer.MAX_VALUE                     | _
+        -Integer.MAX_VALUE                    | _
     }
 
     def "should use a #delegateClass.simpleName for length #length"() {
@@ -66,13 +66,13 @@ class PermutationsSpec extends Specification {
         permutations.delegate.getClass().name == delegateClass.name
 
         where:
-        length                  | delegateClass
-        0                       | LongPermutations
-        1                       | LongPermutations
-        2                       | LongPermutations
-        20                      | LongPermutations
-        21                      | BigIntegerPermutations
-        Permutations.MAX_LENGTH | BigIntegerPermutations
+        length                            | delegateClass
+        0                                 | LongPermutations
+        1                                 | LongPermutations
+        2                                 | LongPermutations
+        LongPermutations.MAX_LENGTH       | LongPermutations
+        (LongPermutations.MAX_LENGTH + 1) | BigIntegerPermutations
+        BigIntegerPermutations.MAX_LENGTH | BigIntegerPermutations
     }
 
     def "LongPermutations should correctly produce a permutation stream for length #length"() {

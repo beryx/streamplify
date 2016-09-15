@@ -19,7 +19,14 @@ import org.beryx.streamplify.BigIntegerIndexedSpliterator;
 
 import java.math.BigInteger;
 
+/**
+ * Provides streams of combinations.
+ * <br>When the binomial coefficient (n choose k) can fit in a long, you may consider using the more efficient {@link LongCombinations}.
+ */
 public class BigIntegerCombinations extends BigIntegerIndexedSpliterator<int[], BigIntegerCombinations> {
+    /**
+     * {@code k}-combinations from a set of {@code n} elements
+     */
     public BigIntegerCombinations(int n, int k) {
         this(count(n, k), n, k);
     }

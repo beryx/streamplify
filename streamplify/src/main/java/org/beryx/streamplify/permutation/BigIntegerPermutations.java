@@ -19,20 +19,28 @@ import org.beryx.streamplify.BigIntegerIndexedSpliterator;
 
 import java.math.BigInteger;
 
+/**
+ * Provides streams of permutations.
+ * <br>For permutations with a length <= 20, you may consider using the more efficient {@link LongPermutations}.
+ */
 public class BigIntegerPermutations extends BigIntegerIndexedSpliterator<int[], BigIntegerPermutations> {
-    public BigIntegerPermutations(int length) {
-        this(factorial(length), length);
-    }
+    public static final int MAX_LENGTH = 20_000;
 
-    BigIntegerPermutations(BigInteger factorial, int length) {
-        super(BigInteger.ZERO, factorial);
-        if(length < 0) throw new IllegalArgumentException("Invalid permutation length: " + length);
+    /**
+     * Constructs permutations of {@code length} elements
+     */
+    public BigIntegerPermutations(int length) {
+        super(BigInteger.ZERO, factorial(length));
         setValueSupplier(new PermutationSupplier.BigInt(length));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 
+    /**
+     * @throws IllegalArgumentException if {@code n} is negative or too big (> {@value #MAX_LENGTH})
+     */
     public static BigInteger factorial(int n) {
-        if(n > Permutations.MAX_LENGTH) throw new IllegalArgumentException("Value too big: " + n);
+        if(n < 0) throw new IllegalArgumentException("Invalid permutation length: " + n);
+        if(n > MAX_LENGTH) throw new IllegalArgumentException("Value too big: " + n);
         BigInteger fact = BigInteger.ONE;
         for(int i = 2; i <= n; i++) {
             fact = fact.multiply(BigInteger.valueOf(i));

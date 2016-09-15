@@ -20,9 +20,16 @@ import org.beryx.streamplify.StreamableProxy;
 
 import java.math.BigInteger;
 
+/**
+ * A {@link Streamable} providing streams of cartesian product tuples.
+ * <br>This class is a proxy that delegates to either {@link LongCartesianProduct} or {@link BigIntegerCartesianProduct}, depending on the cardinalities of the input sets.
+ */
 public class CartesianProduct extends StreamableProxy<int[], CartesianProduct> {
     private final Streamable<int[], ?> delegate;
 
+    /**
+     * @param dimensions the cardinalities of the input sets.
+     */
     public CartesianProduct(int... dimensions) {
         BigInteger count = BigIntegerCartesianProduct.count(dimensions);
         if(count.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {

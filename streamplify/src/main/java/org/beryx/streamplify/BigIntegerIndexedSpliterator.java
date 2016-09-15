@@ -22,11 +22,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * An indexed-spliterator that uses a BigInteger index.
+ */
 public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSpliterator<T,S>> implements Spliterator<T>, Streamable<T,S> {
     private static final Logger logger =  LoggerFactory.getLogger(LongPermutations.class);
 
@@ -153,8 +157,8 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     }
 
     @Override
-    public S shuffle() {
-        shuffler = new DefaultBigIntegerShuffler(fence);
+    public S shuffle(Random rnd) {
+        shuffler = new DefaultBigIntegerShuffler(fence, rnd);
         return (S)this;
     }
 }

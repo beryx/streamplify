@@ -18,19 +18,22 @@ package org.beryx.streamplify.permutation;
 import org.beryx.streamplify.Streamable;
 import org.beryx.streamplify.StreamableProxy;
 
-import java.math.BigInteger;
-
+/**
+ * A {@link Streamable} providing streams of permutations.
+ * <br>This class is a proxy that delegates to either {@link LongPermutations} or {@link BigIntegerPermutations}, depending on the permutation length.
+ */
 public class Permutations extends StreamableProxy<int[], Permutations> {
-    public static final int MAX_LENGTH = 20_000;
 
     private final Streamable<int[], ?> delegate;
 
+    /**
+     * @param length the permutation length
+     */
     public Permutations(int length) {
-        BigInteger count = BigIntegerPermutations.factorial(length);
-        if(count.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0) {
-            delegate = new LongPermutations(count.longValueExact(), length);
+        if(length <= LongPermutations.MAX_LENGTH) {
+            delegate = new LongPermutations(length);
         } else {
-            delegate = new BigIntegerPermutations(count, length);
+            delegate = new BigIntegerPermutations(length);
         }
     }
 

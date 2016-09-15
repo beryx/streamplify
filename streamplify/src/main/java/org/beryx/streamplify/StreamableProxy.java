@@ -16,9 +16,16 @@
 package org.beryx.streamplify;
 
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.stream.Stream;
 
+/**
+ * A {@link Streamable} that forwards its calls to a delegate
+ */
 public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implements Streamable<T, S> {
+    /**
+     * @return the delegate to which method calls are forwarded.
+     */
     protected abstract Streamable<T, ?> getDelegate();
 
     public S withAdditionalCharacteristics(int additionalCharacteristics) {
@@ -57,7 +64,7 @@ public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implemen
     }
 
     @Override
-    public <Z extends Streamable<T,?>> Z shuffle() {
-        return (Z)getDelegate().shuffle();
+    public <Z extends Streamable<T,?>> Z shuffle(Random rnd) {
+        return (Z)getDelegate().shuffle(rnd);
     }
 }

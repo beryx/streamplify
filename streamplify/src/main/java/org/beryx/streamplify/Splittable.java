@@ -16,9 +16,16 @@
 package org.beryx.streamplify;
 
 import java.math.BigInteger;
+import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 
+/**
+ * A functional interface providing a method for splitting this instance.
+ * <br>Used primarily by implementations of the valueSupplier requested by indexed-spliterators
+ * (such as {@link LongIndexedSpliterator} or {@link BigIntegerIndexedSpliterator}).
+ * The valueSupplier's {@link #split()} is typically called whenever the indexed spliterator performs a {@link Spliterator#trySplit()}.
+ */
 @FunctionalInterface
 public interface Splittable<S extends Splittable<S>> {
     interface LongIndexed<T> extends LongFunction<T>, Splittable<LongIndexed<T>> {
@@ -50,5 +57,10 @@ public interface Splittable<S extends Splittable<S>> {
 
     }
 
+    /**
+     * Splits this instance.
+     * @return a Splittable.
+     * This is usually a newly created instance, but may also be this instance, if the implementing class has no state.
+     */
     S split();
 }

@@ -17,23 +17,31 @@ package org.beryx.streamplify.permutation;
 
 import org.beryx.streamplify.LongIndexedSpliterator;
 
-import java.math.BigInteger;
-
+/**
+ * Provides streams of permutations.
+ * <br>Can be used for permutations with a maximum length of {@value #MAX_LENGTH}.
+ * For bigger values, a {@link BigIntegerPermutations} is needed.
+ */
 public class LongPermutations extends LongIndexedSpliterator<int[], LongPermutations> {
-    public LongPermutations(int length) {
-        this(factorial(length), length);
-    }
+    public static final int MAX_LENGTH = 20;
 
-    LongPermutations(long factorial, int length) {
-        super(0, factorial);
-        if(length < 0) throw new IllegalArgumentException("Invalid permutation length: " + length);
+    /**
+     * Constructs permutations of {@code length} elements
+     */
+    public LongPermutations(int length) {
+        super(0, factorial(length));
         setValueSupplier(new PermutationSupplier.Long(length));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 
-    public static long factorial(int len) {
-        BigInteger bigCount = BigIntegerPermutations.factorial(len);
-        if(bigCount.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) >= 0) throw new IllegalArgumentException("Permutation length too big: " + len);
-        return bigCount.longValueExact();
+    /**
+     * @throws IllegalArgumentException if {@code n} is negative or the result does not fit in a long (that is, {@code n} > {@value #MAX_LENGTH})
+     */
+    public static long factorial(int n) {
+        if(n < 0) throw new IllegalArgumentException("Invalid permutation length: " + n);
+        if(n > MAX_LENGTH) throw new IllegalArgumentException("Permutation length too big: " + n);
+        long fact = 1;
+        for(int i = 2; i <= n; i ++) fact *= i;
+        return fact;
     }
 }
