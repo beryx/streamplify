@@ -5,13 +5,13 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id "com.github.ethankhall.semantic-versioning" version "1.1.0"
-    id "com.github.ben-manes.versions" version "0.11.3"
-    id "com.jfrog.bintray" version "1.6"
+    id "com.github.ben-manes.versions" version "0.13.0"
+    id "com.jfrog.bintray" version "1.7.1"
     id "org.asciidoctor.convert" version "1.5.3"
-    id 'org.ajoberstar.github-pages' version '1.5.1'
-    id "com.github.hierynomus.license" version "0.12.1"
-    id "net.saliman.properties" version "1.4.4"
-    id 'com.github.jk1.dependency-license-report' version '0.3.4'
+    id 'org.ajoberstar.github-pages' version '1.6.0-rc.1'
+    id "com.github.hierynomus.license" version "0.13.1"
+    id "net.saliman.properties" version "1.4.5"
+    id 'com.github.jk1.dependency-license-report' version '0.3.5'
 }
 
 project.version.with {
