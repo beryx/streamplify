@@ -213,6 +213,10 @@ asciidoctor {
              linkcss: true
 }
 
+task deleteGHPagesRepo(type: Delete) {
+   delete "${project.buildDir}/ghpages"
+}
+publishGhPages.dependsOn deleteGHPagesRepo
 githubPages {
   repoUri = 'https://github.com/beryx/streamplify.git'
 
@@ -222,15 +226,12 @@ githubPages {
   }
 
   pages {
-    from file("${asciidoctor.outputDir.path}/html5")
-    from file('doc/CNAME')
-  }
-  pages {
     def pgType = project.hasProperty('ghPageType') ? ghPageType : 'latest'
     if(pgType == 'init') {
       from file("ghpages")
     } else {
       from file("${asciidoctor.outputDir.path}/html5")
+      from file("streamplify/build/docs")
     }
     def docDir = Boolean.valueOf(streamplifyReleaseBuild) ? 'releases' : 'snapshots'
     if(pgType == 'init') {
@@ -342,7 +343,7 @@ def readFromConsole(header, prompt, isPassword) {
         }
         return value
     } else {
-        throw new GradleException("Cannot get console.")
+        throw new GradleException("Cannot get console. Try running gradle with the '--no-daemon' option")
     }
 }
 
@@ -362,7 +363,7 @@ gradle.taskGraph.whenReady { taskGraph ->
 bintray {
     user = project.hasProperty('bintrayUser') ? project.getProperty('bintrayUser') : "unknownUser"
     key =  project.hasProperty('bintrayKey') ? project.getProperty('bintrayKey') : "unknownKey"
-    publications = subprojects.name
+    publications = ["streamplify"]
     pkg {
         repo = 'maven'
         name = 'streamplify'

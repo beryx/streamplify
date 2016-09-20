@@ -6,7 +6,6 @@
 :data-uri:
 :caption:
 :last-update-label!:
-:docinfo1:
 
 :leveloffset: +1
 
