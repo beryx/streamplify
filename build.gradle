@@ -45,7 +45,7 @@ def pomConfig = {
     }
 }
 
-allprojects {    
+allprojects {
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:all,-syntax,-missing', '-quiet')
     }
@@ -53,7 +53,7 @@ allprojects {
 
 def defaultEncoding = 'UTF-8'
 
-subprojects {    
+subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -67,44 +67,44 @@ subprojects {
         jcenter()
         mavenCentral()
     }
-    
+
     sourceCompatibility = 1.8
     group = 'org.beryx'
     version = streamplifyVersion
-    
+
     [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
-    
+
     configurations {
       provided
       compile {transitive = true}
     }
-    
+
     license {
         header rootProject.file("license-header.txt")
         skipExistingHeaders true
         ignoreFailures false
     }
-    
+
     signing {
         sign configurations.archives
     }
-    
+
     signArchives {
       onlyIf { gradle.taskGraph.allTasks.findAll {task -> isPublishTask(task)} }
     }
-    
-    dependencies {      
+
+    dependencies {
         compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
         provided 'com.google.code.findbugs:findbugs-annotations:3.0.1'
     }
-    
+
     sourceSets.main.compileClasspath += configurations.provided
-    
+
     findbugs {
         effort = "max"
         excludeFilter = file("$rootProject.projectDir/findbugsExclude.xml")
     }
-    
+
     jar {
         manifest {
             attributes 'Implementation-Title': "${project.archivesBaseName}",
@@ -112,30 +112,30 @@ subprojects {
                     'Implementation-Vendor-Id': 'beryx.org'
         }
     }
-    
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
     }
-    
+
     configureJavadoc(javadoc)
-    
+
     task javadocJar(type: Jar, dependsOn: classes) {
         classifier "javadoc"
         from javadoc
     }
-    
+
     artifacts {
         (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar, javadocJar)
     }
 
     task "create-dirs" << {
        sourceSets*.java.srcDirs*.each { it.mkdirs() }
-       
+
        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
     }
-    
-    
+
+
     ///////////  ECLIPSE  //////////////////
     def resourcesDir = 'src/main/resources/'
     eclipse.classpath.file {
@@ -151,7 +151,7 @@ subprojects {
             }
         }
     }
-    
+
     eclipse {
         project {
             file.beforeMerged { project ->
@@ -162,7 +162,7 @@ subprojects {
             plusConfigurations << configurations.provided
         }
     }
-    
+
     /////////////  IDEA  ///////////////////
     idea {
       module {
@@ -246,7 +246,7 @@ githubPages {
 
 }
 
-project('streamplify') {    
+project('streamplify') {
     apply plugin: 'groovy'
 
     [compileGroovy, compileTestGroovy]*.options*.encoding = defaultEncoding
@@ -260,7 +260,7 @@ project('streamplify') {
         }
         testCompile 'cglib:cglib-nodep:3.2.4'
         testCompile 'org.objenesis:objenesis:2.4'
-        testCompile('com.athaydes:spock-reports:1.2.12') { transitive = false}      
+        testCompile('com.athaydes:spock-reports:1.2.12') { transitive = false}
     }
 
     publishing {
@@ -289,7 +289,7 @@ project('streamplify') {
     }
 }
 
-project('streamplify-examples') {    
+project('streamplify-examples') {
     dependencies {
         compile project(':streamplify')
         compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
@@ -311,7 +311,7 @@ def configureJavadoc(task) {
           classpath += project.configurations.provided
       }
       configure(options) {
-          links "http://docs.oracle.com/javase/6/docs/api/"
+          links "http://docs.oracle.com/javase/8/docs/api/"
       }
   }
 }

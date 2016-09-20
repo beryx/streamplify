@@ -30,7 +30,7 @@ public interface Streamable<T, S extends Streamable<T,S>> {
     /** @return a possibly parallel {@code Stream} */
     Stream<T> parallelStream();
 
-    /** @return the number of elements in the data source, or -1 if the number is too big to be fit in a long. **/
+    /** @return the number of elements in the data source, or -1 if the number is too big to fit in a long. **/
     long count();
 
     /** @return the number of elements in the data source as BigInteger. **/

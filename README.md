@@ -11,6 +11,8 @@ The utilities offered by Streamplify include:
 - classes that help you implement your own efficient parallel streams.
 
 **Example**
+
+The following code snippet uses a parallel permutation stream to find all solutions of the [N-Queens problem](https://en.wikipedia.org/wiki/Eight_queens_puzzle) for n = 10.
 ```
 System.out.println(new Permutations(10)
     .parallelStream()
@@ -27,10 +29,10 @@ System.out.println(new Permutations(10)
 ```
 
 
-Please read the **[documentation](http://streamplify.beryx.org)** and the **[javadoc](http://streamplify.beryx.org/releases/latest/javadoc)**.
+Before starting to use the library, take a look at the **[examples](streamplify-examples/src/main/java/org/beryx/streamplify/example)**, then consult the **[documentation](http://streamplify.beryx.org)** and the **[javadoc](http://streamplify.beryx.org/releases/latest/javadoc)**.
 
 **Contribute to this project!**
 
 We welcome all kind of contributions and there are many ways in which you can help this project.
 
-Read the **[how to contribute](CONTRIBUTING.md)** and jump in!
+Read **[how to contribute](CONTRIBUTING.md)** and jump in!
