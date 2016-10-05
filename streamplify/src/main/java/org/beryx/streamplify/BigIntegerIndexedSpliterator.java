@@ -53,8 +53,23 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         return (S)this;
     }
 
-    public final void setValueSupplier(Splittable.BigIntegerIndexed<T> valueSupplier) {
+    /**
+     * Configures the shuffler of this source.
+     * Unless you provide your own {@link BigIntegerShuffler} implementation, you should use {@link #shuffle()} or {@link #shuffle(Random)} instead of this method.
+     * @return this instance
+     */
+    public final S withShuffler(BigIntegerShuffler shuffler) {
+        this.shuffler = shuffler;
+        return (S)this;
+    }
+
+    /**
+     * Configures the value supplier of this source.
+     * @return this instance
+     */
+    public final S withValueSupplier(Splittable.BigIntegerIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
+        return (S)this;
     }
 
     protected BigInteger getIndex() {
@@ -130,10 +145,10 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
     public Spliterator<T> trySplit() {
         BigInteger mid = index.add(fence).divide(BigInteger.valueOf(2));
         if(index.compareTo(mid) >= 0) return null;
-        BigIntegerIndexedSpliterator<T,S> spliterator = new BigIntegerIndexedSpliterator<>(index, mid);
-        spliterator.withAdditionalCharacteristics(characteristics);
-        spliterator.setValueSupplier(valueSupplier.split());
-        spliterator.setShuffler(shuffler);
+        S spliterator = (S)new BigIntegerIndexedSpliterator<T,S>(index, mid)
+                .withAdditionalCharacteristics(characteristics)
+                .withValueSupplier(valueSupplier.split())
+                .withShuffler(shuffler);
         index = mid;
         return spliterator;
     }
@@ -149,11 +164,6 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
             }
             index = fence;
         }
-    }
-
-
-    protected void setShuffler(BigIntegerShuffler shuffler) {
-        this.shuffler = shuffler;
     }
 
     @Override

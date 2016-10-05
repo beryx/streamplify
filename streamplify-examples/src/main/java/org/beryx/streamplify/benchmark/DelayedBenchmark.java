@@ -41,7 +41,7 @@ public class DelayedBenchmark {
     public class DelayedIdentitySpliterator extends LongIndexedSpliterator<Long, DelayedIdentitySpliterator> {
         DelayedIdentitySpliterator() {
             super(0, count);
-            setValueSupplier(new Splittable.LongIndexed<Long>() {
+            this.withValueSupplier(new Splittable.LongIndexed<Long>() {
                 @Override
                 public Long apply(long value) {
                     busy(delay);

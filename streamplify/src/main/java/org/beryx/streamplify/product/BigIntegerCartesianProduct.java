@@ -35,7 +35,7 @@ public class BigIntegerCartesianProduct extends BigIntegerIndexedSpliterator<int
     BigIntegerCartesianProduct(BigInteger count, int... dimensions) {
         super(BigInteger.ZERO, count);
         if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
-        setValueSupplier(new CartesianProductSupplier.BigInt(dimensions, count));
+        this.withValueSupplier(new CartesianProductSupplier.BigInt(dimensions, count));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 

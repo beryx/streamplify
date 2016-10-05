@@ -43,8 +43,8 @@ public class Fibonacci extends LongIndexedSpliterator<BigInteger, Fibonacci> {
         if(fromValue < 0 || count < 0 || fromValue > Integer.MAX_VALUE - count) {
             throw new IllegalArgumentException("fromValue: " + fromValue + ", count: " + count);
         }
-        setValueSupplier(new Supplier());
-        withAdditionalCharacteristics(Spliterator.DISTINCT);
+        this.withValueSupplier(new Supplier());
+        this.withAdditionalCharacteristics(Spliterator.DISTINCT);
     }
 
     public static class Supplier implements Splittable.LongIndexed<BigInteger> {

@@ -52,8 +52,23 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         return (S)this;
     }
 
-    public final void setValueSupplier(Splittable.LongIndexed<T> valueSupplier) {
+    /**
+     * Configures the shuffler of this source.
+     * Unless you provide your own {@link LongShuffler} implementation, you should use {@link #shuffle()} or {@link #shuffle(Random)} instead of this method.
+     * @return this instance
+     */
+    public final S withShuffler(LongShuffler shuffler) {
+        this.shuffler = shuffler;
+        return (S)this;
+    }
+
+    /**
+     * Configures the value supplier of this source.
+     * @return this instance
+     */
+    public final S withValueSupplier(Splittable.LongIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
+        return (S)this;
     }
 
     protected final long getIndex() {
@@ -130,10 +145,10 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
     public Spliterator<T> trySplit() {
         long mid = (index + fence) >>> 1;
         if(index >= mid) return null;
-        LongIndexedSpliterator<T,S> spliterator = new LongIndexedSpliterator<>(index, mid);
-        spliterator.withAdditionalCharacteristics(characteristics);
-        spliterator.setValueSupplier(valueSupplier.split());
-        spliterator.setShuffler(shuffler);
+        S spliterator = (S)new LongIndexedSpliterator<T,S>(index, mid)
+                .withAdditionalCharacteristics(characteristics)
+                .withValueSupplier(valueSupplier.split())
+                .withShuffler(shuffler);
         index = mid;
         return spliterator;
     }
@@ -149,10 +164,6 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
             }
             index = fence;
         }
-    }
-
-    protected void setShuffler(LongShuffler shuffler) {
-        this.shuffler = shuffler;
     }
 
     @Override

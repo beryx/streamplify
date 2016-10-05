@@ -34,7 +34,7 @@ public class BigIntegerCombinations extends BigIntegerIndexedSpliterator<int[], 
     BigIntegerCombinations(BigInteger count, int n, int k) {
         super(BigInteger.ZERO, count);
         if(n < 0 || k < 0 || n < k) throw new IllegalArgumentException("Invalid (n,k): (" + n + "," + k + ")");
-        setValueSupplier(new CombinationSupplier.BigInt(count, n, k));
+        this.withValueSupplier(new CombinationSupplier.BigInt(count, n, k));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 

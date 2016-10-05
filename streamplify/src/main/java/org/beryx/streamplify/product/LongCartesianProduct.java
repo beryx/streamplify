@@ -36,7 +36,7 @@ public class LongCartesianProduct extends LongIndexedSpliterator<int[], LongCart
     public LongCartesianProduct(long count, int... dimensions) {
         super(0, count);
         if(Arrays.stream(dimensions).anyMatch(dim -> dim < 0)) throw new IllegalArgumentException("Invalid dimensions: " + Arrays.toString(dimensions));
-        setValueSupplier(new CartesianProductSupplier.Long(count, dimensions));
+        this.withValueSupplier(new CartesianProductSupplier.Long(count, dimensions));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 

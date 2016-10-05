@@ -31,7 +31,7 @@ public class BigIntegerPermutations extends BigIntegerIndexedSpliterator<int[], 
      */
     public BigIntegerPermutations(int length) {
         super(BigInteger.ZERO, factorial(length));
-        setValueSupplier(new PermutationSupplier.BigInt(length));
+        this.withValueSupplier(new PermutationSupplier.BigInt(length));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 

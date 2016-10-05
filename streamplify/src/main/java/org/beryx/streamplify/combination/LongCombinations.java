@@ -35,7 +35,7 @@ public class LongCombinations extends LongIndexedSpliterator<int[], LongCombinat
     LongCombinations(long count, int n, int k) {
         super(0, count);
         if(n < 0 || k < 0 || n < k) throw new IllegalArgumentException("Invalid (n,k): (" + n + "," + k + ")");
-        this.setValueSupplier(new CombinationSupplier.Long(count, n, k));
+        this.withValueSupplier(new CombinationSupplier.Long(count, n, k));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 

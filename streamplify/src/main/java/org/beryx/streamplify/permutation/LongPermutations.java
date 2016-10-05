@@ -30,7 +30,7 @@ public class LongPermutations extends LongIndexedSpliterator<int[], LongPermutat
      */
     public LongPermutations(int length) {
         super(0, factorial(length));
-        setValueSupplier(new PermutationSupplier.Long(length));
+        this.withValueSupplier(new PermutationSupplier.Long(length));
         this.withAdditionalCharacteristics(DISTINCT);
     }
 
