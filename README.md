@@ -7,7 +7,7 @@ The goal of this library is to provide useful Java 8 streams and to assist you i
 
 The utilities offered by Streamplify include:
 
-- combinatorics streams: permutations, combinations, cartesian product etc.
+- combinatorics streams: permutations, combinations, cartesian products etc.
 - classes that help you implement your own efficient parallel streams.
 
 **Example**
@@ -15,17 +15,19 @@ The utilities offered by Streamplify include:
 The following code snippet uses a parallel permutation stream to find all solutions of the [N-Queens problem](https://en.wikipedia.org/wiki/Eight_queens_puzzle) for n = 10.
 ```
 System.out.println(new Permutations(10)
-    .parallelStream()
-    .filter(perm -> {
-        for(int i = 0; i < perm.length - 1; i++) {
-            for(int j = i + 1; j < perm.length; j++) {
-                if(Math.abs(perm[j] - perm[i]) == j - i) return false;
+        .parallelStream()
+        .filter(perm -> {
+            for(int i = 0; i < perm.length - 1; i++) {
+                for(int j = i + 1; j < perm.length; j++) {
+                    if(Math.abs(perm[j] - perm[i]) == j - i) return false;
+                }
             }
-        }
-        return true;
-    })
-    .map(perm -> Arrays.toString(perm))
-    .collect(Collectors.joining("\n")));
+            return true;
+        })
+        .map(perm -> IntStream.range(0, perm.length)
+                .mapToObj(i -> "(" + (i + 1) + "," + (perm[i] + 1) + ")")
+                .collect(Collectors.joining(", ")))
+        .collect(Collectors.joining("\n")));
 ```
 
 
