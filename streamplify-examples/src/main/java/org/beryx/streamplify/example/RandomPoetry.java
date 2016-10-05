@@ -59,7 +59,7 @@ public class RandomPoetry {
      * </pre>
      * @param args
      */
-    public static final void main(String[] args) {
+    public static void main(String[] args) {
         System.out.println(new RandomPoetry()
                 .withOneOf("The", "One", "A")
                 .withOneOf("cat", "dog", "eagle", "man", "woman", "child", "girl", "boy")

@@ -26,9 +26,10 @@ import java.util.stream.Stream;
  * <br>Illustrates the use of {@link Permutations}.
  */
 public class CardDeck {
-    private static final int LENGTH = 52;
     private static final String[] RANKS = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+    private static final int RANKS_COUNT = RANKS.length;
     private static final String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
+    private static final int LENGTH = RANKS_COUNT * SUITS.length;
 
     public Stream<int[]> stream() {
         return new Permutations(LENGTH).shuffle().stream();
@@ -39,13 +40,13 @@ public class CardDeck {
     }
 
     public static String toString(int val) {
-        String rank = RANKS[val % 13];
-        String suit = SUITS[val / 13];
+        String rank = RANKS[val % RANKS_COUNT];
+        String suit = SUITS[val / RANKS_COUNT];
         return rank + " of " + suit;
     }
 
     public static String toString(int[] arrangement) {
-        return Arrays.stream(arrangement).mapToObj(val -> toString(val)).collect(Collectors.joining("\n"));
+        return Arrays.stream(arrangement).mapToObj(CardDeck::toString).collect(Collectors.joining("\n"));
     }
 
     public static void main(String[] args) {

@@ -32,11 +32,11 @@ public class NQueens {
     }
 
     public Stream<int[]> stream() {
-        return new Permutations(length).stream().filter(perm -> isNQueensSolution(perm));
+        return new Permutations(length).stream().filter(NQueens::isNQueensSolution);
     }
 
     public Stream<int[]> parallelStream() {
-        return new Permutations(length).parallelStream().filter(perm -> isNQueensSolution(perm));
+        return new Permutations(length).parallelStream().filter(NQueens::isNQueensSolution);
     }
 
     public static boolean isNQueensSolution(int[] perm) {
@@ -97,7 +97,7 @@ public class NQueens {
                 + new NQueens(12)
                 .parallelStream()
                 .limit(10)
-                .map(solution -> toString(solution))
+                .map(NQueens::toString)
                 .collect(Collectors.joining("\n\n")));
     }
 }
