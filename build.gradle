@@ -24,6 +24,7 @@ project.version.with {
     releaseBuild = Boolean.valueOf(streamplifyReleaseBuild)
 }
 ext.streamplifyVersion = project.version as String
+ext.streamplifyTag = Boolean.valueOf(streamplifyReleaseBuild) ? "v$ext.streamplifyVersion" : 'master'
 
 repositories {
   jcenter()
@@ -212,7 +213,9 @@ asciidoctor {
              imagesdir: 'img',
              'data-uri': '',
              linkattrs: true,
-             linkcss: true
+             linkcss: true,
+             'git-tag': streamplifyTag,
+             'blob-root': "https://github.com/beryx/streamplify/blob/$streamplifyTag"
 }
 
 task deleteGHPagesRepo(type: Delete) {

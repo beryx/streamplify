@@ -1,6 +1,11 @@
 [[introduction]]
 = Introduction
 
-The Streamplify library offers streams for permutations, combinations and cartesian products.
+The goal of this library is to provide useful Java 8 streams and to assist you in building new streams that allow efficient parallel processing.
+
+The utilities offered by Streamplify include:
+
+- combinatorics streams: permutations, combinations, cartesian products etc.
+- classes that help you implement your own efficient parallel streams.
 
 NOTE: The source code is available on https://github.com/beryx/streamplify[GitHub].

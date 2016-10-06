@@ -1,4 +1,265 @@
 [[user_guide]]
 = User Guide
 
-TBD
+NOTE: The JavaDoc is available link:javadoc/[here].
+
+== Utilities
+
+=== Indexed Spliterators
+
+http://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html[Spliterator]s play an essential role in enabling parallel operations on streams.
+They cover the elements of a source, which can be, for example, an array, a http://docs.oracle.com/javase/8/docs/api/java/util/Collection.html[Collection], an I/O channel, or a generator function.
+
+In order to allow parallel operations, a spliterator must be able to partition its source.
+This operation is performed by the http://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html#trySplit--[trySplit()] method.
+If the spliterator can be partitioned, this method returns a new spliterator, which covers some portion of the elements, while the caller spliterator will no longer cover this portion.
+
+Java's http://docs.oracle.com/javase/8/docs/api/java/util/Spliterators.html[Spliterators] class provides static methods for creating instances of Spliterator from any http://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html[Iterator].
+The `trySplit` method of the spliterators produced by these methods works as follows:
+it creates a new spliterator that covers a batch of elements obtained by repeatedly calling the iterator’s `next` method.
+If the iterator’s next method is expensive, the spliterator will have a high splitting cost, which leads to poor parallel performance.
+Such situations may arise if retrieving the next element involves extensive computations or long I/O operations.
+
+In this case, if your source allows indexed-based access to its elements, you can use the _indexed spliterators_ offered by _Streamplify_ in order to ensure that your stream can be efficiently parallelized.
+The `trySplit` method of the indexed spliterators is very efficient: it just divides the index range in two subranges of about the same size.
+
+Two spliterators for indexed stream sources are currently available:
+link:javadoc/org/beryx/streamplify/LongIndexedSpliterator.html[LongIndexedSpliterator]
+and link:javadoc/org/beryx/streamplify/BigIntegerIndexedSpliterator.html[BigIntegerIndexedSpliterator].
+The second one is needed for huge sources, with a number of elements that does not fit in a long.
+
+TIP: Look at the source code of some classes that extend _LongIndexedSpliterator_:
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/LongCombinations.java[LongCombinations.java],
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/LongPermutations.java[LongPermutations.java]
+or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/LongCartesianProduct.java[LongCartesianProduct.java].
+link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Fibonacci.java[Fibonacci.java],
+link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Jacobsthal.java[Jacobsthal.java]. +
+ +
+Look at the source code of some classes that extend _BigIntegerIndexedSpliterator_:
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/BigIntegerCombinations.java[BigIntegerCombinations.java],
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/BigIntegerPermutations.java[BigIntegerPermutations.java]
+or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java[BigIntegerCartesianProduct.java].
+
+Before using an indexed spliterator, you must set its _value supplier_, which, depending on the type of your spliterator, is an instance of either
+link:javadoc/org/beryx/streamplify/Splittable.LongIndexed.html[LongIndexed]
+or link:javadoc/org/beryx/streamplify/Splittable.BigIntegerIndexed.html[BigIntegerIndexed].
+
+The `apply(long index)` method of a value supplier should return the element with the given index in the stream.
+Using an index to retrieve the corresponding element of a stream is sometimes computationally expensive,
+but in many cases a more efficient alternative exists: obtaining the requested element based on the value of the element that precedes it in the stream.
+This is the case for most combinatorics classes provided by _Streamplify_.
+Therefore, these classes use stateful value suppliers, which keep track of the last requested index and its associated element.
+If the value of the preceding element is available, these value suppliers use it to obtain the requested element.
+Otherwise, for example right after a call to `trySplit`, the more computationally expensive method of obtaining the requested element based on its index will be used.
+
+When an indexed spliterator splits itself as a result to a `trySplit` call, the newly created indexed spliterator must also get a value supplier.
+This is provided by the value supplier of the current spliterator, which calls its own
+link:javadoc/org/beryx/streamplify/Splittable.html#split--[split] method.
+If the value supplier is stateless, the return value of `split` may be the value supplier itself.
+Otherwise, a new value supplier should be created.
+
+TIP: Look at the source code of some value supplier classes:
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationsSupplier.java[CombinationsSupplier.java],
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationsSupplier.java[PermutationsSupplier.java]
+or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java[CartesianProductSupplier.java].
+
+=== Streamable
+
+Objects implementing the link:javadoc/org/beryx/streamplify/Streamable.html[Streamable] interface
+provide data in form of sequential or parallel http://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html[Stream]s.
+
+*Important methods:*
+
+- `Stream<T> stream();` +
+Returns a sequential stream.
+
+- `Stream<T> parallelStream();` +
+Returns a possibly parallel stream.
+
+- `long count();` +
+`BigInteger bigCount();` +
+These methods return the number of elements in the data source as long or BigInteger.
+
+- `<Z extends Streamable<T,?>> Z skip(long n);` +
+`<Z extends Streamable<T,?>> Z skip(BigInteger n);` +
+These methods configure the streamable to provide streams that skip the first _n_ elements in the data source.
+The number of elements to be skipped can be provided as a long or as a BigInteger.
+
+- `<Z extends Streamable<T,?>> Z shuffle();` +
+`<Z extends Streamable<T,?>> Z shuffle(Random random);` +
+These methods configure the streamable to provide streams that shuffle the elements in the data source.
+If the _random_ argument is missing, a new http://docs.oracle.com/javase/8/docs/api/java/util/Random.html[Random] instance will be created and used. +
++
+Shuffling a potentially huge stream is not a trivial task.
+_Streamplify_ takes a pragmatic approach and uses a shuffling algorithm that is fast, memory efficient and decently scatters the elements, although not in a uniformly distributed manner.
+This means that `shuffle()` is adequate for most practical purposes, but not for hardcore scientific research.
+
+
+=== StreamableProxy
+
+Some streams can have a huge number of elements.
+For example, the number of permutations of _n_ objects is _n!_, which means that even a permutation stream for 21 objects has a number of elements that no longer fits in a long.
+For efficiency reasons, you may want to dynamically decide whether to provide a Streamable implementation based on _LongIndexedSpliterator_ or on _BigIntegerIndexedSpliterator_, depending on the number of elements in your stream.
+This is possible by using a link:javadoc/org/beryx/streamplify/StreamableProxy.html[StreamableProxy], which forwards its method calls to a delegate.
+
+A concrete class that extends _StreamableProxy_ must implement the following method: +
+ `Streamable<T, ?> getDelegate();`
+
+
+TIP: See the implementation of `getDelegate()` in
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/Combinations.java[Combinations.java],
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/Permutations.java[Permutations.java]
+or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProduct.java[CartesianProduct.java].
+
+
+== Combinatorics
+
+=== Combinations
+
+To generate streams of https://en.wikipedia.org/wiki/Combination[combinations] of _n_ elements taken _k_ at a time, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/combination/Combinations.html[Combinations] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/combination/LongCombinations.html[LongCombinations]
+or link:javadoc/org/beryx/streamplify/combination/BigIntegerCombinations.html[BigIntegerCombinations],
+depending on the values of _n_ and _k_.
+
+The code below uses the _Combinations_ class to solve the following problem: +
+_Each morning, you must eat 3 different fruits.
+You can choose from: apple, banana, mango, orange, peach.
+Print all your options._
+
+[source, java]
+.Print all combinations of 3 fruits chosen from: apple, banana, mango, orange, peach
+----
+final String[] FRUITS = {"apple", "banana", "mango", "orange", "peach"};
+System.out.println(new Combinations(5, 3)
+        .stream()
+        .map(combination -> Arrays.stream(combination)
+                .mapToObj(i -> FRUITS[i])
+                .collect(Collectors.joining(", ")))
+        .collect(Collectors.joining("\n")));
+----
+
+
+.Output
+----
+apple, banana, mango
+apple, banana, orange
+apple, banana, peach
+apple, mango, orange
+apple, mango, peach
+apple, orange, peach
+banana, mango, orange
+banana, mango, peach
+banana, orange, peach
+mango, orange, peach
+----
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Diet.java[Diet.java] for a more elaborate version of the above example.
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java[Arrangements.java]
+for an example of combining combinations and permutations.
+
+
+=== Permutations
+
+To generate streams of https://en.wikipedia.org/wiki/Permutation[permutations] of _n_ elements, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/permutation/Permutations.html[Permutations] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/permutation/LongPermutations.html[LongPermutations]
+or link:javadoc/org/beryx/streamplify/permutation/BigIntegerPermutations.html[BigIntegerPermutations],
+depending on the value of _n_.
+
+To illustrate the use of permutations, let's solve the  https://en.wikipedia.org/wiki/Eight_queens_puzzle[N-Queens problem] for a board with size 10 x 10.
+
+[source, java]
+.Solve the N-Queens problem with size 10
+----
+System.out.println(new Permutations(10)
+        .parallelStream()
+        .filter(perm -> {
+            for(int i = 0; i < perm.length - 1; i++) {
+                for(int j = i + 1; j < perm.length; j++) {
+                    if(Math.abs(perm[j] - perm[i]) == j - i) return false;
+                }
+            }
+            return true;
+        })
+        .map(perm -> IntStream.range(0, perm.length)
+                .mapToObj(i -> "(" + (i + 1) + "," + (perm[i] + 1) + ")")
+                .collect(Collectors.joining(", ")))
+        .collect(Collectors.joining("\n")));
+----
+
+.Output (fragment)
+----
+(1,1), (2,3), (3,6), (4,8), (5,10), (6,5), (7,9), (8,2), (9,4), (10,7)
+(1,1), (2,3), (3,6), (4,9), (5,7), (6,10), (7,4), (8,2), (9,5), (10,8)
+(1,1), (2,3), (3,6), (4,9), (5,7), (6,10), (7,4), (8,2), (9,8), (10,5)
+(1,1), (2,3), (3,9), (4,7), (5,10), (6,4), (7,2), (8,5), (9,8), (10,6)
+(1,1), (2,4), (3,6), (4,9), (5,3), (6,10), (7,8), (8,2), (9,5), (10,7)
+(1,1), (2,4), (3,7), (4,10), (5,2), (6,9), (7,5), (8,3), (9,8), (10,6)
+(1,1), (2,4), (3,7), (4,10), (5,3), (6,9), (7,2), (8,5), (9,8), (10,6)
+(1,1), (2,4), (3,7), (4,10), (5,6), (6,9), (7,2), (8,5), (9,3), (10,8)
+...
+----
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/NQueens.java[NQueens.java] for a more elaborate version of the above example.
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/CardDeck.java[CardDeck.java]
+and link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/TSP.java[TSP.java]
+for more examples using permutations, and
+link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java[Arrangements.java]
+for an example of combining combinations and permutations.
+
+=== Cartesian Product
+
+To generate streams of https://en.wikipedia.org/wiki/Cartesian_product[Cartesian product] elements, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/product/CartesianProduct.html[CartesianProduct] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/product/LongCartesianProduct.html[LongCartesianProduct]
+or link:javadoc/org/beryx/streamplify/product/BigIntegerCartesianProduct.html[BigIntegerCartesianProduct],
+depending on the cardinalities of the involved sets.
+
+The code below uses the _CartesianProduct_ class to solve the following problem: +
+_On a flight, you get a snack consisting of a fruit, a candy and a beverage.
+The fruit is either an apple or a banana.
+The candy is either Twix or Mars.
+Available beverages are: water, tea and coffee.
+Print all possible ways to choose your snack._
+
+[source, java]
+.Print all possible ways to choose a snack
+----
+final String[] FRUITS = {"apple", "banana"};
+final String[] CANDIES = {"Twix", "Mars"};
+final String[] DRINKS = {"water", "tea", "coffee"};
+
+System.out.println(
+  new CartesianProduct(FRUITS.length, CANDIES.length, DRINKS.length)
+        .stream()
+        .map(snack -> FRUITS[snack[0]]
+                      + ", " + CANDIES[snack[1]]
+                      + ", " + DRINKS[snack[2]])
+        .collect(Collectors.joining("\n")));
+----
+
+
+.Output
+----
+apple, Twix, water
+apple, Twix, tea
+apple, Twix, coffee
+apple, Mars, water
+apple, Mars, tea
+apple, Mars, coffee
+banana, Twix, water
+banana, Twix, tea
+banana, Twix, coffee
+banana, Mars, water
+banana, Mars, tea
+banana, Mars, coffee
+----
+
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java[RandomPoetry.java] for another example involving _CartesianProduct_.
