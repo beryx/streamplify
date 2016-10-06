@@ -138,17 +138,13 @@ subprojects {
        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
     }
 
-
     ///////////  ECLIPSE  //////////////////
-    def resourcesDir = 'src/main/resources/'
     eclipse.classpath.file {
         beforeMerged { classpath ->
             classpath.entries.removeAll()
         }
         whenMerged { classpath ->
             classpath.entries.findAll { entry -> entry.kind == 'lib' }*.exported = true
-            classpath.entries.removeAll { entry -> entry.kind == 'src' && entry.path.contains('/resources') }
-            classpath.entries.add(new org.gradle.plugins.ide.eclipse.model.SourceFolder(resourcesDir, null))
             classpath.entries.findAll { entry -> entry.kind == 'con' && entry.path.contains('StandardVMType') }.each { entry ->
                 entry.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('accessible', 'javafx/**'))
             }
