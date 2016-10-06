@@ -57,6 +57,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
      * Unless you provide your own {@link LongShuffler} implementation, you should use {@link #shuffle()} or {@link #shuffle(Random)} instead of this method.
      * @return this instance
      */
+    @SuppressWarnings("unchecked")
     public final S withShuffler(LongShuffler shuffler) {
         this.shuffler = shuffler;
         return (S)this;
@@ -66,6 +67,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
      * Configures the value supplier of this source.
      * @return this instance
      */
+    @SuppressWarnings("unchecked")
     public final S withValueSupplier(Splittable.LongIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
         return (S)this;
@@ -99,6 +101,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         return BigInteger.valueOf(count());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S skip(long n) {
         if(n < 0) throw new IllegalArgumentException("skip(" + n + ")");
@@ -106,6 +109,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         return (S)this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S skip(BigInteger bigN) {
         if(bigN.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("skip(" + bigN + ")");
@@ -166,6 +170,7 @@ public class LongIndexedSpliterator<T, S extends LongIndexedSpliterator<T, S>> i
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S shuffle(Random rnd) {
         shuffler = new DefaultLongShuffler(fence, rnd);

@@ -28,6 +28,7 @@ public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implemen
      */
     protected abstract Streamable<T, ?> getDelegate();
 
+    @SuppressWarnings("unchecked")
     public S withAdditionalCharacteristics(int additionalCharacteristics) {
         getDelegate().withAdditionalCharacteristics(additionalCharacteristics);
         return (S)this;
@@ -53,16 +54,19 @@ public abstract class StreamableProxy<T,S extends StreamableProxy<T,S>> implemen
         return getDelegate().bigCount();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <Z extends Streamable<T,?>> Z skip(long n) {
         return (Z)getDelegate().skip(n);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <Z extends Streamable<T,?>> Z skip(BigInteger n) {
         return (Z)getDelegate().skip(n);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <Z extends Streamable<T,?>> Z shuffle(Random rnd) {
         return (Z)getDelegate().shuffle(rnd);

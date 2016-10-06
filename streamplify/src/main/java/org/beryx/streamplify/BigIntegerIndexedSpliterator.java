@@ -58,6 +58,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
      * Unless you provide your own {@link BigIntegerShuffler} implementation, you should use {@link #shuffle()} or {@link #shuffle(Random)} instead of this method.
      * @return this instance
      */
+    @SuppressWarnings("unchecked")
     public final S withShuffler(BigIntegerShuffler shuffler) {
         this.shuffler = shuffler;
         return (S)this;
@@ -67,6 +68,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
      * Configures the value supplier of this source.
      * @return this instance
      */
+    @SuppressWarnings("unchecked")
     public final S withValueSupplier(Splittable.BigIntegerIndexed<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
         return (S)this;
@@ -104,11 +106,13 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         return fence.subtract(index);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S skip(long n) {
         return skip(BigInteger.valueOf(n));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S skip(BigInteger n) {
         if(n.compareTo(BigInteger.ZERO) < 0) throw new IllegalArgumentException("skip(" + n + ")");
@@ -166,6 +170,7 @@ public class BigIntegerIndexedSpliterator<T, S extends BigIntegerIndexedSplitera
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public S shuffle(Random rnd) {
         shuffler = new DefaultBigIntegerShuffler(fence, rnd);
