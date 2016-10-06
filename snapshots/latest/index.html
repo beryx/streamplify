@@ -184,8 +184,8 @@ or <a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/mai
 </div>
 <div class="paragraph">
 <p>Before using an indexed spliterator, you must set its <em>value supplier</em>, which, depending on the type of your spliterator, is an instance of either
-<a href="javadoc/org/beryx/streamplify/Splittable.LongIndexed.html">LongIndexed</a>
-or <a href="javadoc/org/beryx/streamplify/Splittable.BigIntegerIndexed.html">BigIntegerIndexed</a>.</p>
+<a href="javadoc/org/beryx/streamplify/Splittable.LongIndexed.html">Splittable.LongIndexed</a>
+or <a href="javadoc/org/beryx/streamplify/Splittable.BigIntegerIndexed.html">Splittable.BigIntegerIndexed</a>.</p>
 </div>
 <div class="paragraph">
 <p>The <code>apply(long index)</code> method of a value supplier should return the element with the given index in the stream.
@@ -211,8 +211,8 @@ Otherwise, a new value supplier should be created.</p>
 </td>
 <td class="content">
 Look at the source code of some value supplier classes:
-<a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationsSupplier.java">CombinationsSupplier.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationsSupplier.java">PermutationsSupplier.java</a>
+<a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java">CombinationSupplier.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java">PermutationSupplier.java</a>
 or <a href="https://github.com/beryx/streamplify/blob/master/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java">CartesianProductSupplier.java</a>.
 </td>
 </tr>
