@@ -41,8 +41,8 @@ link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/Big
 or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java[BigIntegerCartesianProduct.java].
 
 Before using an indexed spliterator, you must set its _value supplier_, which, depending on the type of your spliterator, is an instance of either
-link:javadoc/org/beryx/streamplify/Splittable.LongIndexed.html[LongIndexed]
-or link:javadoc/org/beryx/streamplify/Splittable.BigIntegerIndexed.html[BigIntegerIndexed].
+link:javadoc/org/beryx/streamplify/Splittable.LongIndexed.html[Splittable.LongIndexed]
+or link:javadoc/org/beryx/streamplify/Splittable.BigIntegerIndexed.html[Splittable.BigIntegerIndexed].
 
 The `apply(long index)` method of a value supplier should return the element with the given index in the stream.
 Using an index to retrieve the corresponding element of a stream is sometimes computationally expensive,
@@ -59,8 +59,8 @@ If the value supplier is stateless, the return value of `split` may be the value
 Otherwise, a new value supplier should be created.
 
 TIP: Look at the source code of some value supplier classes:
-link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationsSupplier.java[CombinationsSupplier.java],
-link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationsSupplier.java[PermutationsSupplier.java]
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java[CombinationSupplier.java],
+link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java[PermutationSupplier.java]
 or link:{blob-root}/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java[CartesianProductSupplier.java].
 
 === Streamable
