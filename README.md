@@ -1,3 +1,4 @@
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/beryx/streamplify/blob/master/LICENSE)
 [![Build Status](https://img.shields.io/travis/beryx/handlebars-java-helpers/master.svg?label=Build)](https://travis-ci.org/beryx/streamplify)
 ## Streamplify ##
@@ -31,10 +32,10 @@ System.out.println(new Permutations(10)
 ```
 
 
-Before starting to use the library, take a look at the **[examples](streamplify-examples/src/main/java/org/beryx/streamplify/example)**, then consult the **[documentation](http://streamplify.beryx.org)** and the **[javadoc](http://streamplify.beryx.org/releases/latest/javadoc)**.
+Before starting to use the library, take a look at the **[examples](streamplify-examples/src/main/java/org/beryx/streamplify/example)**, read the **[documentation](http://streamplify.beryx.org)** and consult the **[javadoc](http://streamplify.beryx.org/releases/latest/javadoc)**.
 
 **Contribute to this project!**
 
-We welcome all kind of contributions and there are many ways in which you can help this project.
+We accept all types of contributions and we are very welcoming to first time contributors.
 
 Read **[how to contribute](CONTRIBUTING.md)** and jump in!
