@@ -28,7 +28,7 @@ This way, we can mark the issue as grabbed in order to prevent that two people w
 
 If you claimed an issue and are no longer able to work on it, please tell us to make it available again.
 
-Advice for newcomers: Don't be afraid to grab an issue, even if you're not sure you can implement it. 
+Advice for newcomers: Don't be afraid to grab an issue, even if you're not sure you can implement it.
 Try your hand at it and don't hesitate to ask for clarification and guidance.
 
 #### Code contributions
@@ -56,6 +56,8 @@ Clone the GitHub repository, `cd` into the top directory and start the build:
 
 #### IntelliJ Idea
 
+Make sure that the Groovy plugin is enabled.
+
 <blockquote><code>./gradlew cleanIdea idea</code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 (On Windows: <code>gradlew cleanIdea idea</code>)
 <br>open <i>streamplify.ipr</i></blockquote>
@@ -63,8 +65,11 @@ Clone the GitHub repository, `cd` into the top directory and start the build:
 or
 
 <blockquote>in IntelliJ, open <i>build.gradle</i></blockquote>
- 
+
 #### Eclipse
+
+If not already available, install the [Groovy plugin](https://github.com/groovy/groovy-eclipse/wiki).
+
 <blockquote><code>./gradlew cleanEclipse eclipse</code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 (On Windows: <code>gradlew cleanEclipse eclipse</code>)
 <br>in Eclipse, import all projects found in the top directory.</blockquote>
