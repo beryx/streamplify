@@ -34,6 +34,8 @@ System.out.println(new Permutations(10)
 
 Before starting to use the library, take a look at the **[examples](streamplify-examples/src/main/java/org/beryx/streamplify/example)**, read the **[documentation](http://streamplify.beryx.org)** and consult the **[javadoc](http://streamplify.beryx.org/releases/latest/javadoc)**.
 
+Streamplify is available in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.beryx%22%20AND%20a%3A%22streamplify%22) and [JCenter](https://bintray.com/beryx/maven/streamplify).
+
 **Contribute to this project!**
 
 We accept all types of contributions and we are very welcoming to first time contributors.
