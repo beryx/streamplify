@@ -16,6 +16,7 @@
 package org.beryx.streamplify.shuffler;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -75,6 +76,12 @@ public class ShufflerImpl {
         int bytesLen = (bitCount + 7) / 8;
 
         byte[] bytes = index.toByteArray();
+        if(bytes.length > bytesLen) {
+            if(bytes[0] != 0) {
+                throw new AssertionError("bytes: " + Arrays.toString(bytes));
+            }
+            bytes = Arrays.copyOfRange(bytes, 1, bytes.length);
+        }
         if(bytes.length < bytesLen) {
             byte[] tmp = bytes;
             bytes = new byte[bytesLen];
@@ -83,17 +90,23 @@ public class ShufflerImpl {
         int bytesOff = bytes.length - bytesLen;
         byte[] shuffled = new byte[bytes.length];
 
-        byte xorByte = 0;
+
+        int idx = 0;
         for(int i = 0; i < wholeBytes; i++) {
-            int currIdx = (int)((bytes[bytesLen + bytesOff - 1 - i] ^ xorByte ) & 0xFF);
-            xorByte ^= currIdx;
-            shuffled[i + bytesOff] = (byte)bytePermutations[i % BYTE_PERMUTATIONS_COUNT][currIdx];
+            int oldIdx = idx;
+            idx = (int)((bytes[bytesLen + bytesOff - 1 - i] ^ idx ) & 0xFF);
+            shuffled[i + bytesOff] = (byte)bytePermutations[i % BYTE_PERMUTATIONS_COUNT][idx];
         }
         if(restBits > 0) {
-            int currIdx = (bytes[bytesOff] ^ xorByte) & ((1 << restBits) - 1);
-            int shuffledByte = bitPermutations[restBits][currIdx];
+            idx = (bytes[bytesOff] ^ idx) & ((1 << restBits) - 1);
+            int shuffledByte = bitPermutations[restBits][idx];
             shuffled[bytesLen + bytesOff - 1] = (byte) (shuffledByte << (8 - restBits));
         }
+
+        for(int i = 0; i < bytes.length - 1; i++) {
+            shuffled[bytes.length - 2 - i] ^= shuffled[bytes.length - 1 - i];
+        }
+
         BigInteger bigShuffled = new BigInteger(1, shuffled);
         if(restBits > 0) {
             bigShuffled = bigShuffled.shiftRight(8 - restBits);
