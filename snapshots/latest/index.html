@@ -50,6 +50,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <li><a href="#_combinations">Combinations</a></li>
 <li><a href="#_permutations">Permutations</a></li>
 <li><a href="#_cartesian_product">Cartesian Product</a></li>
+<li><a href="#_derangements">Derangements</a></li>
 </ul>
 </li>
 </ul>
@@ -509,6 +510,59 @@ banana, Mars, coffee</pre>
 </td>
 <td class="content">
 See <a href="https://github.com/beryx/streamplify/blob/master/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java">RandomPoetry.java</a> for another example involving <em>CartesianProduct</em>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_derangements">Derangements</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Derangement">derangements</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/derangement/Derangements.html">Derangements</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/derangement/LongDerangements.html">LongDerangements</a>
+or <a href="javadoc/org/beryx/streamplify/derangement/BigIntegerDerangements.html">BigIntegerDerangements</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>Derangements</em> class to solve the following problem:<br>
+<em>List all possible permutations of the word ABCD such that none of the letters remain in its original position.</em></p>
+</div>
+<div class="listingblock">
+<div class="title">Print all derangements of the word ABCD</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span> WORD = <span class="string"><span class="delimiter">&quot;</span><span class="content">ABCD</span><span class="delimiter">&quot;</span></span>;
+<span class="predefined-type">System</span>.out.println(<span class="keyword">new</span> Derangements(<span class="integer">4</span>)
+        .stream()
+        .map(combination -&gt; <span class="predefined-type">Arrays</span>.stream(combination)
+                .mapToObj(i -&gt; <span class="predefined-type">Character</span>.toString(WORD.charAt(i)))
+                .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)))
+        .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>)));</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>BCDA
+BDAC
+BADC
+CADB
+CDBA
+CDAB
+DABC
+DCAB
+DCBA</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://github.com/beryx/streamplify/blob/master/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java">Hats.java</a> for a different version of the above example.
 </td>
 </tr>
 </table>
