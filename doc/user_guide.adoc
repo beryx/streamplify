@@ -263,3 +263,43 @@ banana, Mars, coffee
 
 
 TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java[RandomPoetry.java] for another example involving _CartesianProduct_.
+
+
+=== Derangements
+
+To generate streams of https://en.wikipedia.org/wiki/Derangement[derangements] of _n_ elements, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/derangement/Derangements.html[Derangements] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/derangement/LongDerangements.html[LongDerangements]
+or link:javadoc/org/beryx/streamplify/derangement/BigIntegerDerangements.html[BigIntegerDerangements],
+depending on the value of _n_.
+
+The code below uses the _Derangements_ class to solve the following problem: +
+_List all possible permutations of the word ABCD such that none of the letters remain in its original position._
+
+[source, java]
+.Print all derangements of the word ABCD
+----
+final String WORD = "ABCD";
+System.out.println(new Derangements(4)
+        .stream()
+        .map(combination -> Arrays.stream(combination)
+                .mapToObj(i -> Character.toString(WORD.charAt(i)))
+                .collect(Collectors.joining("")))
+        .collect(Collectors.joining("\n")));
+----
+
+.Output
+----
+BCDA
+BDAC
+BADC
+CADB
+CDBA
+CDAB
+DABC
+DCAB
+DCBA
+----
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java[Hats.java] for a different version of the above example.
