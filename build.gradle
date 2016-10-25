@@ -2,7 +2,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.plugins.signing.Sign
 
 plugins {
+    id 'java'
     id 'idea'
+    id 'eclipse'
     id 'maven-publish'
     id 'com.github.ethankhall.semantic-versioning' version '1.1.0'
     id 'com.github.ben-manes.versions' version '0.13.0'
@@ -132,33 +134,28 @@ subprojects {
         (System.getenv("TRAVIS") == "true") ? archives(sourcesJar) : archives(sourcesJar, javadocJar)
     }
 
-    task "create-dirs" << {
-       sourceSets*.java.srcDirs*.each { it.mkdirs() }
-
-       sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    task "create-dirs" {
+        doLast {
+            sourceSets*.java.srcDirs*.each { it.mkdirs() }
+            sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+        }
     }
-
+    
     ///////////  ECLIPSE  //////////////////
-    eclipse.classpath.file {
-        beforeMerged { classpath ->
-            classpath.entries.removeAll()
-        }
-        whenMerged { classpath ->
-            classpath.entries.findAll { entry -> entry.kind == 'lib' }*.exported = true
-            classpath.entries.findAll { entry -> entry.kind == 'con' && entry.path.contains('StandardVMType') }.each { entry ->
-                entry.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('accessible', 'javafx/**'))
-            }
-        }
-    }
-
     eclipse {
+        classpath {
+            file {
+                whenMerged {
+                    def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
+                    jre.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('0', 'javafx/**'))
+                }
+            }
+            plusConfigurations << configurations.provided
+        }
         project {
             file.beforeMerged { project ->
                 project.natures.clear()
             }
-        }
-        classpath {
-            plusConfigurations << configurations.provided
         }
     }
 
@@ -170,34 +167,9 @@ subprojects {
     }
 }
 
+
 def gitIgnore = file(".gitignore").readLines()
 def gitIgnoreDirs = gitIgnore*.trim().findAll { !it.startsWith("#") && it.endsWith("/") }
-
-idea {
-  module {
-    outputFile = file("streamplify.iml")
-  }
-  project {
-    languageLevel = "1.8"
-    outputFile = file('streamplify.ipr')
-    ipr {
-      withXml { provider ->
-        def vcsDirMap = provider.node.component.find { it.@name == 'VcsDirectoryMappings' }
-        if(vcsDirMap) {
-          vcsDirMap.mapping.@directory = '$PROJECT_DIR$/..'
-          vcsDirMap.mapping.@vcs = 'Git'
-        }
-      }
-    }
-    configure(modules) { module ->
-      excludeDirs = module.project.files(gitIgnoreDirs) as Set
-    }
-  }
-}
-
-ideaWorkspace {
-  outputFile = file('streamplify.iws')
-}
 
 asciidoctor {
   sourceDir = file("doc")
@@ -299,17 +271,14 @@ project('streamplify-examples') {
     }
 }
 
-task javadoc(type: Javadoc) {
-    title "Streamplify Documentation ($streamplifyVersion)"
-    destinationDir file("build/javadoc")
-    source subprojects.javadoc.source
-    classpath = files(subprojects.javadoc.classpath)
-}
-
 configureJavadoc(javadoc)
 
 def configureJavadoc(task) {
   configure(task) {
+      title "Streamplify Documentation ($streamplifyVersion)"
+      destinationDir file("build/javadoc")
+      source project(':streamplify').javadoc.source
+      classpath = files(project(':streamplify').javadoc.classpath)
       if(project.configurations.hasProperty('provided')) {
           classpath += project.configurations.provided
       }
@@ -384,4 +353,9 @@ bintray {
                 }
         }
     }
+}
+
+dependencies {
+    compile project(':streamplify')
+    compile project(':streamplify-examples')
 }

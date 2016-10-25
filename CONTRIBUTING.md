@@ -56,20 +56,13 @@ Clone the GitHub repository, `cd` into the top directory and start the build:
 
 #### IntelliJ Idea
 
-Make sure that the Groovy plugin is enabled.
-
-<blockquote><code>./gradlew cleanIdea idea</code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-(On Windows: <code>gradlew cleanIdea idea</code>)
-<br>open <i>streamplify.ipr</i></blockquote>
-
-or
-
-<blockquote>in IntelliJ, open <i>build.gradle</i></blockquote>
+- make sure that the Groovy plugin is enabled
+- open <i>build.gradle</i>
 
 #### Eclipse
 
-If not already available, install the [Groovy plugin](https://github.com/groovy/groovy-eclipse/wiki).
-
-<blockquote><code>./gradlew cleanEclipse eclipse</code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-(On Windows: <code>gradlew cleanEclipse eclipse</code>)
-<br>in Eclipse, import all projects found in the top directory.</blockquote>
+- install the [Groovy plugin](https://github.com/groovy/groovy-eclipse/wiki);
+  update site: http://dist.springsource.org/snapshot/GRECLIPSE/e4.6/
+- install Buildship 1.0.21 or newer;
+  update site: http://download.eclipse.org/buildship/updates/e46/releases/1.0/1.0.21.v20161010-1640/
+- import the project using the _Gradle Project_ wizard

@@ -1,3 +1,5 @@
+rootProject.name = 'streamplify-root'
+
 String[] modules = [
     'streamplify',
     'streamplify-examples',
