@@ -93,7 +93,6 @@ public class ShufflerImpl {
 
         int idx = 0;
         for(int i = 0; i < wholeBytes; i++) {
-            int oldIdx = idx;
             idx = (int)((bytes[bytesLen + bytesOff - 1 - i] ^ idx ) & 0xFF);
             shuffled[i + bytesOff] = (byte)bytePermutations[i % BYTE_PERMUTATIONS_COUNT][idx];
         }

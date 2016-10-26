@@ -23,6 +23,7 @@ import java.math.BigInteger;
  * Provides streams of derangements.
  * <br>For derangements with a length <= 21, you may consider using the more efficient {@link LongDerangements}.
  */
+@SuppressWarnings("unchecked")
 public class BigIntegerDerangements extends BigIntegerIndexedSpliterator<int[], BigIntegerDerangements> {
     public static final int MAX_LENGTH = 20_000;
 

@@ -38,7 +38,8 @@ public class DelayedBenchmark {
         this.delay = delay;
     }
 
-    public class DelayedIdentitySpliterator extends LongIndexedSpliterator<Long, DelayedIdentitySpliterator> {
+    @SuppressWarnings("unchecked")
+	public class DelayedIdentitySpliterator extends LongIndexedSpliterator<Long, DelayedIdentitySpliterator> {
         DelayedIdentitySpliterator() {
             super(0, count);
             this.withValueSupplier(new Splittable.LongIndexed<Long>() {

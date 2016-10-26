@@ -24,6 +24,7 @@ import java.util.Arrays;
  * Provides streams of cartesian product tuples.
  * <br>When the cardinality of the cartesian product can fit in a long, you may consider using the more efficient {@link LongCartesianProduct}.
  */
+@SuppressWarnings("unchecked")
 public class BigIntegerCartesianProduct extends BigIntegerIndexedSpliterator<int[], BigIntegerCartesianProduct> {
     /**
      * @param dimensions the cardinalities of the input sets.

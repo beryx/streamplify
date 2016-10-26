@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * (Note that the closed-form solution is computationally cheap.
  * See {@link Fibonacci} for an example of a series where the closed-form solution involves time consuming computations, thus prohibiting its use.)
  */
+@SuppressWarnings("unchecked")
 public class Jacobsthal extends LongIndexedSpliterator<BigInteger, Jacobsthal> {
     public Jacobsthal(int fromValue, int count) {
         super(fromValue, fromValue + count);

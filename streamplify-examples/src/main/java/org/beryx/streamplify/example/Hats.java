@@ -15,12 +15,10 @@
  */
 package org.beryx.streamplify.example;
 
-import org.beryx.streamplify.derangement.Derangements;
-import org.beryx.streamplify.derangement.LongDerangements;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import org.beryx.streamplify.derangement.Derangements;
 
 /**
  * Generates <a href="https://en.wikipedia.org/wiki/Derangement">derangements</a>.

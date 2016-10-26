@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
  * However, this involves time consuming BigDecimal computations, leading to situations where using a parallel stream takes longer than using a sequential one.
  * (See {@link Jacobsthal} for an example of a series with computationally cheap closed-form solutions.)
  */
+@SuppressWarnings("unchecked")
 public class Fibonacci extends LongIndexedSpliterator<BigInteger, Fibonacci> {
     public Fibonacci(int fromValue, int count) {
         super(fromValue, fromValue + count);

@@ -22,6 +22,7 @@ import org.beryx.streamplify.LongIndexedSpliterator;
  * <br>Can be used for derangements with a maximum length of {@value #MAX_LENGTH}.
  * For bigger values, a {@link BigIntegerDerangements} is needed.
  */
+@SuppressWarnings("unchecked")
 public class LongDerangements extends LongIndexedSpliterator<int[], LongDerangements> {
     public static final int MAX_LENGTH = 21;
 

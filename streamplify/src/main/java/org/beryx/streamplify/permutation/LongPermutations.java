@@ -22,6 +22,7 @@ import org.beryx.streamplify.LongIndexedSpliterator;
  * <br>Can be used for permutations with a maximum length of {@value #MAX_LENGTH}.
  * For bigger values, a {@link BigIntegerPermutations} is needed.
  */
+@SuppressWarnings("unchecked")
 public class LongPermutations extends LongIndexedSpliterator<int[], LongPermutations> {
     public static final int MAX_LENGTH = 20;
 

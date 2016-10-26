@@ -23,6 +23,7 @@ import java.math.BigInteger;
  * Provides streams of combinations.
  * <br>When the binomial coefficient (n choose k) can fit in a long, you may consider using the more efficient {@link LongCombinations}.
  */
+@SuppressWarnings("unchecked")
 public class BigIntegerCombinations extends BigIntegerIndexedSpliterator<int[], BigIntegerCombinations> {
     /**
      * {@code k}-combinations from a set of {@code n} elements

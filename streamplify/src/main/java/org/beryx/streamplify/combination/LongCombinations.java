@@ -24,6 +24,7 @@ import java.math.BigInteger;
  * <br>Can be used when the binomial coefficient (n choose k) is a number that can fit in a long.
  * For bigger values, a {@link BigIntegerCombinations} is needed.
  */
+@SuppressWarnings("unchecked")
 public class LongCombinations extends LongIndexedSpliterator<int[], LongCombinations> {
     /**
      * {@code k}-combinations from a set of {@code n} elements

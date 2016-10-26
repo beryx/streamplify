@@ -23,6 +23,7 @@ import java.math.BigInteger;
  * Provides streams of permutations.
  * <br>For permutations with a length <= 20, you may consider using the more efficient {@link LongPermutations}.
  */
+@SuppressWarnings("unchecked")
 public class BigIntegerPermutations extends BigIntegerIndexedSpliterator<int[], BigIntegerPermutations> {
     public static final int MAX_LENGTH = 20_000;
 

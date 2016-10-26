@@ -25,6 +25,7 @@ import java.util.Arrays;
  * <br>Can be used when the cardinality of the cartesian product can fit in a long.
  * For bigger cardinalities, a {@link BigIntegerCartesianProduct} is needed.
  */
+@SuppressWarnings("unchecked")
 public class LongCartesianProduct extends LongIndexedSpliterator<int[], LongCartesianProduct> {
     /**
      * @param dimensions the cardinalities of the input sets.
