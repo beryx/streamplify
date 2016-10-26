@@ -140,7 +140,7 @@ subprojects {
             sourceSets*.resources.srcDirs*.each { it.mkdirs() }
         }
     }
-    
+
     ///////////  ECLIPSE  //////////////////
     eclipse {
         classpath {
@@ -206,7 +206,7 @@ githubPages {
       from file("ghpages")
     } else {
       from file("${asciidoctor.outputDir.path}/html5")
-      from file("streamplify/build/docs")
+      from file("build/javadoc")
     }
     def docDir = Boolean.valueOf(streamplifyReleaseBuild) ? 'releases' : 'snapshots'
     if(pgType == 'init') {
