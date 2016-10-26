@@ -206,7 +206,7 @@ githubPages {
       from file("ghpages")
     } else {
       from file("${asciidoctor.outputDir.path}/html5")
-      from file("build/javadoc")
+      from file("build/docs")
     }
     def docDir = Boolean.valueOf(streamplifyReleaseBuild) ? 'releases' : 'snapshots'
     if(pgType == 'init') {
@@ -276,7 +276,7 @@ configureJavadoc(javadoc)
 def configureJavadoc(task) {
   configure(task) {
       title "Streamplify Documentation ($streamplifyVersion)"
-      destinationDir file("build/javadoc")
+      destinationDir file("build/docs/javadoc")
       source project(':streamplify').javadoc.source
       classpath = files(project(':streamplify').javadoc.classpath)
       if(project.configurations.hasProperty('provided')) {
