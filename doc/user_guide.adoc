@@ -303,3 +303,47 @@ DCBA
 ----
 
 TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java[Hats.java] for a different version of the above example.
+
+=== PowerSet
+
+To generate streams of https://en.wikipedia.org/wiki/Power_set[PowerSet] of _n_ elements, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/powerset/PowerSet.html[PowerSet] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/powerset/LongPowerSet.html[LongPowerSet]
+or link:javadoc/org/beryx/streamplify/powerset/BigIntegerPowerSet.html[BigIntegerPowerSet],
+depending on the value of _n_.
+
+The code below uses the _PowerSet_ class to solve the following problem: +
+_Print possible ways in which group of 4 friends can for a trip._
+
+[source, java]
+.Print all possible groups of 4 friends Alice, Bob, Chloe, David.
+----
+final String[] friends = new String[]{"Alice", "Bob", "Chloe", "David"};
+        new PowerSet(4).stream().forEach(set -> {
+            for (int setElementIndex : set) {
+                System.out.print(friends[setElementIndex] + " ");
+            }
+            System.out.println();
+        });
+----
+
+.Output
+----
+Alice 
+Bob 
+Alice Bob 
+Chloe 
+Alice Chloe 
+Bob Chloe 
+Alice Bob Chloe 
+David 
+Alice David 
+Bob David 
+Alice Bob David 
+Chloe David 
+Alice Chloe David 
+Bob Chloe David 
+Alice Bob Chloe David 
+----
+
