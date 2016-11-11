@@ -51,6 +51,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <li><a href="#_permutations">Permutations</a></li>
 <li><a href="#_cartesian_product">Cartesian Product</a></li>
 <li><a href="#_derangements">Derangements</a></li>
+<li><a href="#_powerset">PowerSet</a></li>
 </ul>
 </li>
 </ul>
@@ -566,6 +567,53 @@ See <a href="https://github.com/beryx/streamplify/blob/master/streamplify-exampl
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_powerset">PowerSet</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Power_set">PowerSet</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/powerset/PowerSet.html">PowerSet</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/powerset/LongPowerSet.html">LongPowerSet</a>
+or <a href="javadoc/org/beryx/streamplify/powerset/BigIntegerPowerSet.html">BigIntegerPowerSet</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>PowerSet</em> class to solve the following problem:<br>
+<em>Print possible ways in which group of 4 friends can for a trip.</em></p>
+</div>
+<div class="listingblock">
+<div class="title">Print all possible groups of 4 friends Alice, Bob, Chloe, David.</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span><span class="type">[]</span> friends = <span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span>{<span class="string"><span class="delimiter">&quot;</span><span class="content">Alice</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Bob</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Chloe</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">David</span><span class="delimiter">&quot;</span></span>};
+        <span class="keyword">new</span> PowerSet(<span class="integer">4</span>).stream().forEach(set -&gt; {
+            <span class="keyword">for</span> (<span class="type">int</span> setElementIndex : set) {
+                <span class="predefined-type">System</span>.out.print(friends[setElementIndex] + <span class="string"><span class="delimiter">&quot;</span><span class="content"> </span><span class="delimiter">&quot;</span></span>);
+            }
+            <span class="predefined-type">System</span>.out.println();
+        });</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>Alice
+Bob
+Alice Bob
+Chloe
+Alice Chloe
+Bob Chloe
+Alice Bob Chloe
+David
+Alice David
+Bob David
+Alice Bob David
+Chloe David
+Alice Chloe David
+Bob Chloe David
+Alice Bob Chloe David</pre>
+</div>
 </div>
 </div>
 </div>
