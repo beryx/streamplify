@@ -29,7 +29,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <h1>Streamplify</h1>
 <div class="details">
 <span id="author" class="author">Serban Iordache</span><br>
-<span id="revnumber">version 1.0.0</span>
+<span id="revnumber">version 1.1.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -50,8 +50,17 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <li><a href="#_combinations">Combinations</a></li>
 <li><a href="#_permutations">Permutations</a></li>
 <li><a href="#_cartesian_product">Cartesian Product</a></li>
+<li><a href="#_derangements">Derangements</a></li>
+<li><a href="#_powerset">PowerSet</a></li>
+<li><a href="#_partial_permutations">Partial Permutations</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#release_notes">Release Notes</a>
+<ul class="sectlevel2">
+<li><a href="#_1_1_0">1.1.0</a></li>
+<li><a href="#_1_0_0">1.0.0</a></li>
 </ul>
 </li>
 </ul>
@@ -70,7 +79,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <div class="ulist">
 <ul>
 <li>
-<p>combinatorics streams: permutations, combinations, cartesian products etc.</p>
+<p>combinatorics streams: permutations, combinations, Cartesian products, powers sets, derangements, partial permutations.</p>
 </li>
 <li>
 <p>classes that help you implement your own efficient parallel streams.</p>
@@ -101,28 +110,28 @@ The source code is available on <a href="https://github.com/beryx/streamplify">G
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-You need Java 8 or newer in order to use streamplify.
+You need Java 8 or newer in order to use streamplify-root.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>streamplify is available in Maven Central and JCenter.</p>
+<p>streamplify-root is available in Maven Central and JCenter.</p>
 </div>
 <div class="listingblock">
 <div class="title">Maven</div>
 <div class="content">
 <pre class="nowrap">&lt;dependency&gt;
     &lt;groupId&gt;org.beryx&lt;/groupId&gt;
-    &lt;artifactId&gt;streamplify&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;artifactId&gt;streamplify-root&lt;/artifactId&gt;
+    &lt;version&gt;1.1.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="nowrap">compile 'org.beryx:streamplify:1.0.0'</pre>
+<pre class="nowrap">compile 'org.beryx:streamplify-root:1.1.0'</pre>
 </div>
 </div>
 </div>
@@ -180,16 +189,16 @@ The second one is needed for huge sources, with a number of elements that does n
 </td>
 <td class="content">
 Look at the source code of some classes that extend <em>LongIndexedSpliterator</em>:
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/combination/LongCombinations.java">LongCombinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/permutation/LongPermutations.java">LongPermutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/product/LongCartesianProduct.java">LongCartesianProduct.java</a>.
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Fibonacci.java">Fibonacci.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Jacobsthal.java">Jacobsthal.java</a>.<br>
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/LongCombinations.java">LongCombinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/LongPermutations.java">LongPermutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/LongCartesianProduct.java">LongCartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Fibonacci.java">Fibonacci.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Jacobsthal.java">Jacobsthal.java</a>.<br>
 <br>
 Look at the source code of some classes that extend <em>BigIntegerIndexedSpliterator</em>:
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/combination/BigIntegerCombinations.java">BigIntegerCombinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/permutation/BigIntegerPermutations.java">BigIntegerPermutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java">BigIntegerCartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/BigIntegerCombinations.java">BigIntegerCombinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/BigIntegerPermutations.java">BigIntegerPermutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java">BigIntegerCartesianProduct.java</a>.
 </td>
 </tr>
 </table>
@@ -223,9 +232,9 @@ Otherwise, a new value supplier should be created.</p>
 </td>
 <td class="content">
 Look at the source code of some value supplier classes:
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java">CombinationSupplier.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java">PermutationSupplier.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java">CartesianProductSupplier.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java">CombinationSupplier.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java">PermutationSupplier.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java">CartesianProductSupplier.java</a>.
 </td>
 </tr>
 </table>
@@ -295,9 +304,9 @@ This is possible by using a <a href="javadoc/org/beryx/streamplify/StreamablePro
 </td>
 <td class="content">
 See the implementation of <code>getDelegate()</code> in
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/combination/Combinations.java">Combinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/permutation/Permutations.java">Permutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProduct.java">CartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/Combinations.java">Combinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/Permutations.java">Permutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProduct.java">CartesianProduct.java</a>.
 </td>
 </tr>
 </table>
@@ -356,7 +365,7 @@ mango, orange, peach</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Diet.java">Diet.java</a> for a more elaborate version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Diet.java">Diet.java</a> for a more elaborate version of the above example.
 </td>
 </tr>
 </table>
@@ -368,7 +377,7 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-exampl
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
 for an example of combining combinations and permutations.
 </td>
 </tr>
@@ -428,7 +437,7 @@ depending on the value of <em>n</em>.</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/NQueens.java">NQueens.java</a> for a more elaborate version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/NQueens.java">NQueens.java</a> for a more elaborate version of the above example.
 </td>
 </tr>
 </table>
@@ -440,10 +449,10 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-exampl
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/CardDeck.java">CardDeck.java</a>
-and <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/TSP.java">TSP.java</a>
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/CardDeck.java">CardDeck.java</a>
+and <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/TSP.java">TSP.java</a>
 for more examples using permutations, and
-<a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
+<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
 for an example of combining combinations and permutations.
 </td>
 </tr>
@@ -508,7 +517,186 @@ banana, Mars, coffee</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java">RandomPoetry.java</a> for another example involving <em>CartesianProduct</em>.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java">RandomPoetry.java</a> for another example involving <em>CartesianProduct</em>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_derangements">Derangements</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Derangement">derangements</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/derangement/Derangements.html">Derangements</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/derangement/LongDerangements.html">LongDerangements</a>
+or <a href="javadoc/org/beryx/streamplify/derangement/BigIntegerDerangements.html">BigIntegerDerangements</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>Derangements</em> class to solve the following problem:<br>
+<em>List all possible permutations of the word ABCD such that none of the letters remain in its original position.</em></p>
+</div>
+<div class="listingblock">
+<div class="title">Print all derangements of the word ABCD</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span> WORD = <span class="string"><span class="delimiter">&quot;</span><span class="content">ABCD</span><span class="delimiter">&quot;</span></span>;
+<span class="predefined-type">System</span>.out.println(<span class="keyword">new</span> Derangements(<span class="integer">4</span>)
+        .stream()
+        .map(combination -&gt; <span class="predefined-type">Arrays</span>.stream(combination)
+                .mapToObj(i -&gt; <span class="predefined-type">Character</span>.toString(WORD.charAt(i)))
+                .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)))
+        .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>)));</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>BCDA
+BDAC
+BADC
+CADB
+CDBA
+CDAB
+DABC
+DCAB
+DCBA</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java">Hats.java</a> for a different version of the above example.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_powerset">PowerSet</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Power_set">PowerSet</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/powerset/PowerSet.html">PowerSet</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/powerset/LongPowerSet.html">LongPowerSet</a>
+or <a href="javadoc/org/beryx/streamplify/powerset/BigIntegerPowerSet.html">BigIntegerPowerSet</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>PowerSet</em> class to solve the following problem:<br>
+<em>Print possible ways in which group of 4 friends can for a trip.</em></p>
+</div>
+<div class="listingblock">
+<div class="title">Print all possible groups of 4 friends Alice, Bob, Chloe, David.</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span><span class="type">[]</span> friends = <span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span>{<span class="string"><span class="delimiter">&quot;</span><span class="content">Alice</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Bob</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Chloe</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">David</span><span class="delimiter">&quot;</span></span>};
+        <span class="keyword">new</span> PowerSet(<span class="integer">4</span>).stream().forEach(set -&gt; {
+            <span class="keyword">for</span> (<span class="type">int</span> setElementIndex : set) {
+                <span class="predefined-type">System</span>.out.print(friends[setElementIndex] + <span class="string"><span class="delimiter">&quot;</span><span class="content"> </span><span class="delimiter">&quot;</span></span>);
+            }
+            <span class="predefined-type">System</span>.out.println();
+        });</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>Alice
+Bob
+Alice Bob
+Chloe
+Alice Chloe
+Bob Chloe
+Alice Bob Chloe
+David
+Alice David
+Bob David
+Alice Bob David
+Chloe David
+Alice Chloe David
+Bob Chloe David
+Alice Bob Chloe David</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_partial_permutations">Partial Permutations</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Partial_permutation">partial permutations</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/partperm/PartialPermutations.html">PartialPermutations</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/partperm/LongPartialPermutations.html">LongPartialPermutations</a>
+or <a href="javadoc/org/beryx/streamplify/partperm/BigIntegerPartialPermutations.html">BigIntegerPartialPermutations</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>PartialPermutations</em> class to solve the following problem:<br>
+<em>List all possible permutations of the letters ABC such that any letter(s) can be replaced by "_</em>"</p>
+</div>
+<div class="listingblock">
+<div class="title">Print all partial permutations of the letters ABC</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span> WORD = <span class="string"><span class="delimiter">&quot;</span><span class="content">ABC</span><span class="delimiter">&quot;</span></span>;
+<span class="directive">final</span> <span class="predefined-type">String</span> BLANK = <span class="string"><span class="delimiter">&quot;</span><span class="content">_</span><span class="delimiter">&quot;</span></span>;
+<span class="predefined-type">System</span>.out.println(<span class="keyword">new</span> PartialPermutations(WORD.length())
+        .stream()
+        .map(combination -&gt; <span class="predefined-type">Arrays</span>.stream(combination)
+                .mapToObj(i -&gt; i == PartialPermutationSupplier.HOLE ? BLANK : <span class="predefined-type">Character</span>.toString(WORD.charAt(i)))
+                .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)))
+        .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>)));</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>___
+__A
+_A_
+A__
+__B
+_B_
+B__
+__C
+_C_
+C__
+_AB
+_BA
+A_B
+AB_
+B_A
+BA_
+_AC
+_CA
+A_C
+AC_
+C_A
+CA_
+_BC
+_CB
+B_C
+BC_
+C_B
+CB_
+ABC
+ACB
+BAC
+BCA
+CAB
+CBA</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Vacation.java">Vacation.java</a> for a different version of the above example.
 </td>
 </tr>
 </table>
@@ -517,10 +705,53 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.0.0/streamplify-exampl
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="release_notes">Release Notes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_1_1_0">1.1.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Power_set">power sets</a>.</p>
+</li>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Derangement">derangements</a>.</p>
+</li>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Partial_permutation">partial permutations</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Thanks to all the contributors to this release:
+<a href="https://github.com/brightcoder">brightcoder</a>,
+<a href="https://github.com/polmauri">polmauri</a> and
+<a href="https://github.com/johnhadfield">John Hadfield</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_1_0_0">1.0.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Permutation">permutations</a>.</p>
+</li>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Combination">combinations</a>.</p>
+</li>
+<li>
+<p>support for <a href="https://en.wikipedia.org/wiki/Cartesian_product">Cartesian products</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0<br>
+Version 1.1.0<br>
 </div>
 </div>
 </body>
