@@ -18,6 +18,7 @@ package org.beryx.streamplify.partperm;
 import org.beryx.streamplify.IntArraySupplier;
 import org.beryx.streamplify.Splittable;
 import org.beryx.streamplify.combination.CombinationSupplier;
+import org.beryx.streamplify.shared.Unranking;
 
 import java.math.BigInteger;
 import java.util.stream.IntStream;
@@ -193,41 +194,9 @@ public abstract class PartialPermutationSupplier implements IntArraySupplier {
                 permutationIndex = lengthOfPermutations;
             }
 
-            int[] currentCombination = unrankCombination(length, subsetSize, nCk.intValue(), combinationIndex);
+            int[] currentCombination = Unranking.unrankCombination(length, subsetSize, nCk.intValue(), combinationIndex);
             int[] permutationStart = PartialPermutationSupplier.generateInitialSequence(currentCombination, length);
             return unrankPermutation(permutationStart, permutationIndex - 1, numberOfHoleElements, lengthOfPermutations);
-        }
-
-        /**
-         * Parameterized version of {@link CombinationSupplier.Long#unrank()}
-         * <p>
-         * This implementation uses the UNRANKCOMB-D algorithm introduced in:
-         * Kokosinski, Zbigniew, and Ikki-Machi Tsuruga. "Algorithms for unranking combinations and other related choice functions." (1995).
-         */
-        private static int[] unrankCombination(int n, int k, long count, long currentIndex) {
-            if (k == 0) return new int[0];
-            int[] combi = new int[k];
-            long rank = count - 1 - currentIndex;
-            long e = (n - k) * count / n;
-            int t = n - k + 1;
-            int m = k;
-            int p = n - 1;
-            do {
-                if (e <= rank) {
-                    combi[k - m] = n - t - m + 1;
-                    if (e > 0) {
-                        rank = rank - e;
-                        e = m * e / p;
-                    }
-                    m--;
-                    p--;
-                } else {
-                    e = (p - m) * e / p;
-                    t--;
-                    p--;
-                }
-            } while (m > 0);
-            return combi;
         }
 
         private int[] unrankPermutation(int[] permutation, long rank, int numberOfHoleElements, long possiblePermutations) {
@@ -338,41 +307,9 @@ public abstract class PartialPermutationSupplier implements IntArraySupplier {
                 permutationIndex = lengthOfPermutations;
             }
 
-            int[] currentCombination = unrankCombination(length, subsetSize, nCk, combinationIndex);
+            int[] currentCombination = Unranking.unrankCombination(length, subsetSize, nCk, combinationIndex);
             int[] permutationStart = PartialPermutationSupplier.generateInitialSequence(currentCombination, length);
             return unrankPermutation(permutationStart, permutationIndex.subtract(BigInteger.ONE), numberOfHoleElements, lengthOfPermutations);
-        }
-
-        /**
-         * Parameterized version of {@link CombinationSupplier.BigInt#unrank()}
-         * <p>
-         * This implementation uses the UNRANKCOMB-D algorithm introduced in:
-         * Kokosinski, Zbigniew, and Ikki-Machi Tsuruga. "Algorithms for unranking combinations and other related choice functions." (1995).
-         */
-        private int[] unrankCombination(int n, int k, BigInteger count, BigInteger currentIndex) {
-            if (k == 0) return new int[0];
-            int[] combi = new int[k];
-            BigInteger rank = count.subtract(BigInteger.ONE).subtract(currentIndex);
-            BigInteger e = count.multiply(BigInteger.valueOf(n - k)).divide(BigInteger.valueOf(n));
-            int t = n - k + 1;
-            int m = k;
-            int p = n - 1;
-            do {
-                if (e.compareTo(rank) <= 0) {
-                    combi[k - m] = n - t - m + 1;
-                    if (e.compareTo(BigInteger.ZERO) > 0) {
-                        rank = rank.subtract(e);
-                        e = e.multiply(BigInteger.valueOf(m)).divide(BigInteger.valueOf(p));
-                    }
-                    m--;
-                    p--;
-                } else {
-                    e = e.multiply(BigInteger.valueOf(p - m)).divide(BigInteger.valueOf(p));
-                    t--;
-                    p--;
-                }
-            } while (m > 0);
-            return combi;
         }
 
         private int[] unrankPermutation(int[] permutation, BigInteger rank, int numberOfHoleElements, BigInteger possiblePermutations) {
