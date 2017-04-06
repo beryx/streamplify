@@ -1,0 +1,19 @@
+[[release_notes]]
+= Release Notes
+
+== 1.1.0
+
+- support for https://en.wikipedia.org/wiki/Power_set[power sets].
+- support for https://en.wikipedia.org/wiki/Derangement[derangements].
+- support for https://en.wikipedia.org/wiki/Partial_permutation[partial permutations].
+
+Thanks to all the contributors to this release:
+https://github.com/brightcoder[brightcoder],
+https://github.com/polmauri[polmauri] and
+https://github.com/johnhadfield[John Hadfield].
+
+
+== 1.0.0
+- support for https://en.wikipedia.org/wiki/Permutation[permutations].
+- support for https://en.wikipedia.org/wiki/Combination[combinations].
+- support for https://en.wikipedia.org/wiki/Cartesian_product[Cartesian products].

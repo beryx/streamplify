@@ -8,7 +8,7 @@ The goal of this library is to provide useful Java 8 streams and to assist you i
 
 The utilities offered by Streamplify include:
 
-- combinatorics streams: permutations, combinations, cartesian products etc.
+- combinatorics streams: permutations, combinations, Cartesian products, power sets, derangements, partial permutations.
 - classes that help you implement your own efficient parallel streams.
 
 **Example**
