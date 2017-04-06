@@ -1,6 +1,7 @@
 org.beryx.streamplify
 org.beryx.streamplify.combination
 org.beryx.streamplify.derangement
+org.beryx.streamplify.partperm
 org.beryx.streamplify.permutation
 org.beryx.streamplify.powerset
 org.beryx.streamplify.product

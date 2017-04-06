@@ -52,6 +52,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <li><a href="#_cartesian_product">Cartesian Product</a></li>
 <li><a href="#_derangements">Derangements</a></li>
 <li><a href="#_powerset">PowerSet</a></li>
+<li><a href="#_partial_permutations">Partial Permutations</a></li>
 </ul>
 </li>
 </ul>
@@ -614,6 +615,85 @@ Alice Chloe David
 Bob Chloe David
 Alice Bob Chloe David</pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_partial_permutations">Partial Permutations</h4>
+<div class="paragraph">
+<p>To generate streams of <a href="https://en.wikipedia.org/wiki/Partial_permutation">partial permutations</a> of <em>n</em> elements, <em>Streamplify</em> offers the
+<a href="javadoc/org/beryx/streamplify/partperm/PartialPermutations.html">PartialPermutations</a> class,
+which is a <em>StreamableProxy</em> that delegates to either
+<a href="javadoc/org/beryx/streamplify/partperm/LongPartialPermutations.html">LongPartialPermutations</a>
+or <a href="javadoc/org/beryx/streamplify/partperm/BigIntegerPartialPermutations.html">BigIntegerPartialPermutations</a>,
+depending on the value of <em>n</em>.</p>
+</div>
+<div class="paragraph">
+<p>The code below uses the <em>PartialPermutations</em> class to solve the following problem:<br>
+<em>List all possible permutations of the letters ABC such that any letter(s) can be replaced by "_</em>"</p>
+</div>
+<div class="listingblock">
+<div class="title">Print all partial permutations of the letters ABC</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">final</span> <span class="predefined-type">String</span> WORD = <span class="string"><span class="delimiter">&quot;</span><span class="content">ABC</span><span class="delimiter">&quot;</span></span>;
+<span class="directive">final</span> <span class="predefined-type">String</span> BLANK = <span class="string"><span class="delimiter">&quot;</span><span class="content">_</span><span class="delimiter">&quot;</span></span>;
+<span class="predefined-type">System</span>.out.println(<span class="keyword">new</span> PartialPermutations(WORD.length())
+        .stream()
+        .map(combination -&gt; <span class="predefined-type">Arrays</span>.stream(combination)
+                .mapToObj(i -&gt; i == PartialPermutationSupplier.HOLE ? BLANK : <span class="predefined-type">Character</span>.toString(WORD.charAt(i)))
+                .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>)))
+        .collect(Collectors.joining(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>)));</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>___
+__A
+_A_
+A__
+__B
+_B_
+B__
+__C
+_C_
+C__
+_AB
+_BA
+A_B
+AB_
+B_A
+BA_
+_AC
+_CA
+A_C
+AC_
+C_A
+CA_
+_BC
+_CB
+B_C
+BC_
+C_B
+CB_
+ABC
+ACB
+BAC
+BCA
+CAB
+CBA</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://github.com/beryx/streamplify/blob/master/streamplify-examples/src/main/java/org/beryx/streamplify/example/Vacation.java">Vacation.java</a> for a different version of the above example.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
