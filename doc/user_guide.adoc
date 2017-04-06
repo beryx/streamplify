@@ -347,3 +347,67 @@ Bob Chloe David
 Alice Bob Chloe David 
 ----
 
+=== Partial Permutations
+
+To generate streams of https://en.wikipedia.org/wiki/Partial_permutation[partial permutations] of _n_ elements, _Streamplify_ offers the
+link:javadoc/org/beryx/streamplify/partperm/PartialPermutations.html[PartialPermutations] class,
+which is a _StreamableProxy_ that delegates to either
+link:javadoc/org/beryx/streamplify/partperm/LongPartialPermutations.html[LongPartialPermutations]
+or link:javadoc/org/beryx/streamplify/partperm/BigIntegerPartialPermutations.html[BigIntegerPartialPermutations],
+depending on the value of _n_.
+
+The code below uses the _PartialPermutations_ class to solve the following problem: +
+_List all possible permutations of the letters ABC such that any letter(s) can be replaced by "__"
+
+[source, java]
+.Print all partial permutations of the letters ABC
+----
+final String WORD = "ABC";
+final String BLANK = "_";
+System.out.println(new PartialPermutations(WORD.length())
+        .stream()
+        .map(combination -> Arrays.stream(combination)
+                .mapToObj(i -> i == PartialPermutationSupplier.HOLE ? BLANK : Character.toString(WORD.charAt(i)))
+                .collect(Collectors.joining("")))
+        .collect(Collectors.joining("\n")));
+----
+
+.Output
+----
+___
+__A
+_A_
+A__
+__B
+_B_
+B__
+__C
+_C_
+C__
+_AB
+_BA
+A_B
+AB_
+B_A
+BA_
+_AC
+_CA
+A_C
+AC_
+C_A
+CA_
+_BC
+_CB
+B_C
+BC_
+C_B
+CB_
+ABC
+ACB
+BAC
+BCA
+CAB
+CBA
+----
+
+TIP: See link:{blob-root}/streamplify-examples/src/main/java/org/beryx/streamplify/example/Vacation.java[Vacation.java] for a different version of the above example.
