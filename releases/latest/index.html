@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.3">
+<meta name="generator" content="Asciidoctor 1.5.7.1">
 <meta name="author" content="Serban Iordache">
 <title>Streamplify</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <link rel="stylesheet" href="./asciidoctor.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="./coderay-asciidoctor.css">
 <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">var _Hasync= _Hasync|| [];
@@ -29,7 +29,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <h1>Streamplify</h1>
 <div class="details">
 <span id="author" class="author">Serban Iordache</span><br>
-<span id="revnumber">version 1.1.0</span>
+<span id="revnumber">version 1.1.1</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -124,14 +124,14 @@ You need Java 8 or newer in order to use streamplify-root.
 <pre class="nowrap">&lt;dependency&gt;
     &lt;groupId&gt;org.beryx&lt;/groupId&gt;
     &lt;artifactId&gt;streamplify-root&lt;/artifactId&gt;
-    &lt;version&gt;1.1.0&lt;/version&gt;
+    &lt;version&gt;1.1.1&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Gradle</div>
 <div class="content">
-<pre class="nowrap">compile 'org.beryx:streamplify-root:1.1.0'</pre>
+<pre class="nowrap">compile 'org.beryx:streamplify-root:1.1.1'</pre>
 </div>
 </div>
 </div>
@@ -189,16 +189,16 @@ The second one is needed for huge sources, with a number of elements that does n
 </td>
 <td class="content">
 Look at the source code of some classes that extend <em>LongIndexedSpliterator</em>:
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/LongCombinations.java">LongCombinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/LongPermutations.java">LongPermutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/LongCartesianProduct.java">LongCartesianProduct.java</a>.
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Fibonacci.java">Fibonacci.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Jacobsthal.java">Jacobsthal.java</a>.<br>
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/combination/LongCombinations.java">LongCombinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/permutation/LongPermutations.java">LongPermutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/product/LongCartesianProduct.java">LongCartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Fibonacci.java">Fibonacci.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Jacobsthal.java">Jacobsthal.java</a>.<br>
 <br>
 Look at the source code of some classes that extend <em>BigIntegerIndexedSpliterator</em>:
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/BigIntegerCombinations.java">BigIntegerCombinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/BigIntegerPermutations.java">BigIntegerPermutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java">BigIntegerCartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/combination/BigIntegerCombinations.java">BigIntegerCombinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/permutation/BigIntegerPermutations.java">BigIntegerPermutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/product/BigIntegerCartesianProduct.java">BigIntegerCartesianProduct.java</a>.
 </td>
 </tr>
 </table>
@@ -232,9 +232,9 @@ Otherwise, a new value supplier should be created.</p>
 </td>
 <td class="content">
 Look at the source code of some value supplier classes:
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java">CombinationSupplier.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java">PermutationSupplier.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java">CartesianProductSupplier.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/combination/CombinationSupplier.java">CombinationSupplier.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/permutation/PermutationSupplier.java">PermutationSupplier.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProductSupplier.java">CartesianProductSupplier.java</a>.
 </td>
 </tr>
 </table>
@@ -304,9 +304,9 @@ This is possible by using a <a href="javadoc/org/beryx/streamplify/StreamablePro
 </td>
 <td class="content">
 See the implementation of <code>getDelegate()</code> in
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/combination/Combinations.java">Combinations.java</a>,
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/permutation/Permutations.java">Permutations.java</a>
-or <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProduct.java">CartesianProduct.java</a>.
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/combination/Combinations.java">Combinations.java</a>,
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/permutation/Permutations.java">Permutations.java</a>
+or <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify/src/main/java/org/beryx/streamplify/product/CartesianProduct.java">CartesianProduct.java</a>.
 </td>
 </tr>
 </table>
@@ -365,7 +365,7 @@ mango, orange, peach</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Diet.java">Diet.java</a> for a more elaborate version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Diet.java">Diet.java</a> for a more elaborate version of the above example.
 </td>
 </tr>
 </table>
@@ -377,7 +377,7 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-exampl
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
 for an example of combining combinations and permutations.
 </td>
 </tr>
@@ -437,7 +437,7 @@ depending on the value of <em>n</em>.</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/NQueens.java">NQueens.java</a> for a more elaborate version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/NQueens.java">NQueens.java</a> for a more elaborate version of the above example.
 </td>
 </tr>
 </table>
@@ -449,10 +449,10 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-exampl
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/CardDeck.java">CardDeck.java</a>
-and <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/TSP.java">TSP.java</a>
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/CardDeck.java">CardDeck.java</a>
+and <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/TSP.java">TSP.java</a>
 for more examples using permutations, and
-<a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
+<a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Arrangements.java">Arrangements.java</a>
 for an example of combining combinations and permutations.
 </td>
 </tr>
@@ -517,7 +517,7 @@ banana, Mars, coffee</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java">RandomPoetry.java</a> for another example involving <em>CartesianProduct</em>.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/RandomPoetry.java">RandomPoetry.java</a> for another example involving <em>CartesianProduct</em>.
 </td>
 </tr>
 </table>
@@ -570,7 +570,7 @@ DCBA</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java">Hats.java</a> for a different version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Hats.java">Hats.java</a> for a different version of the above example.
 </td>
 </tr>
 </table>
@@ -696,7 +696,7 @@ CBA</pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-examples/src/main/java/org/beryx/streamplify/example/Vacation.java">Vacation.java</a> for a different version of the above example.
+See <a href="https://github.com/beryx/streamplify/blob/v1.1.1/streamplify-examples/src/main/java/org/beryx/streamplify/example/Vacation.java">Vacation.java</a> for a different version of the above example.
 </td>
 </tr>
 </table>
@@ -751,7 +751,7 @@ See <a href="https://github.com/beryx/streamplify/blob/v1.1.0/streamplify-exampl
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.1.0<br>
+Version 1.1.1<br>
 </div>
 </div>
 </body>
