@@ -114,7 +114,8 @@ subprojects {
         manifest {
             attributes 'Implementation-Title': "${project.archivesBaseName}",
                     'Implementation-Version': streamplifyVersion,
-                    'Implementation-Vendor-Id': 'beryx.org'
+                    'Implementation-Vendor-Id': 'beryx.org',
+                    'Automatic-Module-Name': 'org.beryx.streamplify'
         }
     }
 
